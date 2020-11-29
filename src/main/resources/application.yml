@@ -1,0 +1,109 @@
+spring:
+  #启用环境配置(dev|druid)
+  profiles:
+    # 根据打包环境自动选择，默认为 dev
+    active: @package.environment@
+  devtools:
+    #设置重启的目录
+    #classpath目录下的page文件夹内容修改不重启
+    restart:
+      exclude: templates/**
+  # 资源信息
+  messages:
+    # 国际化资源文件路径
+    basename: static/i18n/messages
+  jackson:
+    time-zone: GMT+8
+    date-format: yyyy-MM-dd HH:mm:ss
+  # 文件上传
+  servlet:
+    multipart:
+      #是否开启多文件上传
+      enabled: true
+      file-size-threshold: 0
+      # 单个文件大小
+      max-file-size:  10MB
+      # 设置总上传的文件大小
+      max-request-size:  20MB
+
+  #邮件
+  mail:
+    default-encoding: UTF-8
+    host: smtp.162.com
+    password: xxxxxxxx
+    username: 283215159@163.com
+
+  #管理后台admin-session集群共享，使用REDIS管理
+  session:
+    redis:
+      cleanup-cron: '0 * * * * * '
+      flush-mode: on-save
+      # 缓存KEY设置
+      namespace: afeng-session
+    store-type: REDIS
+    # 管理后台admin-session 有效时间（秒）
+    timeout: 3600
+
+# 输出编码格式
+server:
+  servlet:
+    encoding:
+      force: true
+      charset: UTF-8
+
+#mybatis配置
+mybatis:
+  #mybatis扫描mapper映射SQL-XML目录路径范围
+  mapper-locations: classpath*:com/afeng/module/**/mapper/*.xml
+  #mybatis扫描model实体类目录路径范围，需要model类上有@Alias注解
+  type-aliases-package: com.afeng.module.**.model
+  configuration:
+    #是否开启驼峰命名，如果开启后将会自动把数据库如字段user_name映射到实体类字段userName中， true|false
+    map-underscore-to-camel-case: true
+    #默认分批条数，例如查询结果总条数为10000条，为了避免数据量过大导致OOM，将会分开10次查询后合并返回的结果
+    default-fetch-size: 100
+    #设置超时时间，它决定驱动等待数据库响应的秒数
+    default-statement-timeout: 60
+
+# PageHelper分页插件
+pagehelper:
+  # 选择数据库模式，不选择则自动识别 oracle,mysql,mariadb,sqlite,hsqldb,postgresql,db2,sqlserver,informix,h2,sqlserver2012,derby
+#  helperDialect: sqlserver2012
+  offsetAsPageNum: true
+  pageSizeZero: true
+  params: pageNum=start;pageSize=limit;pageSizeZero=zero;reasonable=heli;count=contsql
+  reasonable: true
+  rowBoundsWithCount: true
+  supportMethodsArguments: true
+
+# 代码生成
+gen:
+  # 作者
+  author: afeng
+  # 默认生成包路径 admin 需改成自己的模块名称 如 system monitor app
+  packageName: com.afeng.module.admin
+  # 自动去除表前缀 true|false，默认是true
+  autoRemovePre: true
+  # 表前缀（生成类名不会包含表前缀，多个用逗号分隔）
+  tablePrefix: sys_,app_
+
+# 自定义属性，可以在Controller中读取
+afeng:
+  hello: Hello GOD
+  # 名称
+  name: afeng
+  # 版本
+  version: 4.2.0
+  # 版权年份
+  copyrightYear: 2020
+  # 实例演示开关 true|false
+  demoEnabled: true
+  # 启用admin管理后台模块开关 true|false
+  adminManageEnabled: true
+  # 获取ip地址开关 true|false
+  addressEnabled: false
+  # 是否启用OSS，启用后上传文件将上传到云存储 true|false
+  ossEnabled: true
+  # 本地文件上传路径，当前项目运行目录下的upload 示例（ Windows配置D:/ruoyi/uploadPath，Linux配置 /home/ruoyi/uploadPath）
+  profile: ${user.dir}/upload
+

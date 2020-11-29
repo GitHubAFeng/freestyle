@@ -1,0 +1,47 @@
+package com.afeng.module.admin.model;
+
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+import org.apache.ibatis.type.Alias;
+
+/**
+ * 角色和部门关联 sys_role_dept
+ *
+ * @author ruoyi
+ */
+@Alias("RoleDept")
+public class RoleDept {
+    /**
+     * 角色ID
+     */
+    private Long roleId;
+
+    /**
+     * 部门ID
+     */
+    private Long deptId;
+
+    public Long getRoleId() {
+        return roleId;
+    }
+
+    public void setRoleId(Long roleId) {
+        this.roleId = roleId;
+    }
+
+    public Long getDeptId() {
+        return deptId;
+    }
+
+    public void setDeptId(Long deptId) {
+        this.deptId = deptId;
+    }
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE)
+                .append("roleId", getRoleId())
+                .append("deptId", getDeptId())
+                .toString();
+    }
+}
