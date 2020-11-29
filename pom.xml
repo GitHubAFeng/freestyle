@@ -3,9 +3,9 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>boot-simple</groupId>
-    <artifactId>boot-simple</artifactId>
-    <version>1.0.0.RELEASE</version>
+    <groupId>free</groupId>
+    <artifactId>free</artifactId>
+    <version>1.0.0</version>
     <!--<packaging>jar</packaging>-->
     <!--打包war-->
     <packaging>war</packaging>
@@ -184,9 +184,9 @@
         </dependency>
         <!-- mssql驱动，如要使用sqlserver则打开，与mysql二选一 -->
         <!--<dependency>-->
-            <!--<groupId>com.microsoft.sqlserver</groupId>-->
-            <!--<artifactId>mssql-jdbc</artifactId>-->
-            <!--<scope>runtime</scope>-->
+        <!--<groupId>com.microsoft.sqlserver</groupId>-->
+        <!--<artifactId>mssql-jdbc</artifactId>-->
+        <!--<scope>runtime</scope>-->
         <!--</dependency>-->
 
         <!--控制器过滤器验证库注解-->
