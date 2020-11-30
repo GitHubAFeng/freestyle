@@ -107,6 +107,12 @@ public class ApiTestController extends BaseApiController {
         return success(JwtUtil.getUserId());
     }
 
+    /**
+     * 数据库操作测试
+     *
+     * @author AFeng
+     * @createDate 2020/11/30 11:59
+     **/
     @ApiAuth(isAuthSign = false)
     @GetMapping("/bd")
     public ApiResult bd(String uid) throws Exception {
