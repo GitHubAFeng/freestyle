@@ -15,4 +15,9 @@
         where oper_id = #{operId}
     </select>
 
+    <select id="findOperLog" parameterType="map" resultType="map">
+        <include refid="findOperLogVo"/>
+        where oper_id = #{operId}
+    </select>
+
 </mapper> 

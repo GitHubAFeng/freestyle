@@ -13,6 +13,7 @@ import com.afeng.framework.core.BaseApiController;
 import com.afeng.framework.core.constant.ApiResult;
 import com.afeng.module.app.model.AppUser;
 import com.afeng.module.app.service.AppUserService;
+import com.afeng.module.common.dao.BaseDao;
 import com.afeng.module.common.dao.CommonDao;
 import com.alibaba.fastjson.JSON;
 import org.apache.commons.lang3.StringUtils;
@@ -60,7 +61,8 @@ public class ApiTestController extends BaseApiController {
     private StringRedisTemplate stringRedisTemplate;
     @Autowired
     private SqlSessionTemplate sqlSessionTemplate;
-
+    @Autowired
+    private BaseDao baseDao;
 
     //测试redis消息队列操作
     @ApiAuth(isAuthSign = false)
@@ -107,7 +109,7 @@ public class ApiTestController extends BaseApiController {
 
     @ApiAuth(isAuthSign = false)
     @GetMapping("/bd")
-    public ApiResult bd(String uid) {
+    public ApiResult bd(String uid) throws Exception {
         Map<String, Object> where = new HashMap<>();
         where.put("oper_id", 1);
         Map<String, Object> Param = new HashMap<>();
@@ -116,10 +118,14 @@ public class ApiTestController extends BaseApiController {
         Param.put("dept_name", "isnull(dept_name,'测试') as deptName");
         Map<String, Object> sysOperLog = commonDao.selectOneByParam("sys_oper_log", Param, where);
         Object object = sqlSessionTemplate.selectOne("findOperLogById", 1L);
+        where = new HashMap<>();
+        where.put("operId", 1);
+        Map<String, Object> logData = baseDao.selectOne("findOperLog", where);
 
         Map<String, Object> reMap = new HashMap<>();
         reMap.put("sqlSessionTemplate", object);
         reMap.put("sysOperLog", sysOperLog);
+        reMap.put("logData", logData);
 
         return success(reMap);
     }
