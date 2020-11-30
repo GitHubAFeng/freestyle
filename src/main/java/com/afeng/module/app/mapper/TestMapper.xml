@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.afeng.module.app.controller.ApiTestController">
 
-
+    <!--测试-->
     <sql id="findOperLogVo">
         select oper_id, title, business_type, method, request_method, operator_type, oper_name, dept_name, oper_url, oper_ip, oper_location, oper_param, json_result, status, error_msg, oper_time
         from sys_oper_log
