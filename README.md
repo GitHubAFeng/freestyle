@@ -10,8 +10,8 @@ free 是一套全部开源的快速开发平台，毫无保留给个人及企业
 
 使用文档持续更新中……
 
-* 感谢 [RuoYi](https://gitee.com/y_project/RuoYi) 一个开源成熟的管理后台项目，free项目中使用了若依管理后台。
-* 感谢 [boot_master](https://gitee.com/bootstrap2table/boot_master) 开源项目，对于作者技术的深度、广度我十份佩服。
+* 感谢 [RuoYi](https://gitee.com/y_project/RuoYi) free项目使用了若依管理后台。
+* 感谢 [boot_master](https://gitee.com/bootstrap2table/boot_master) free项目参考了此开源项目。
 
 ### 核心依赖
 
