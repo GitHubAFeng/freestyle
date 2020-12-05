@@ -9,11 +9,11 @@ free 是一套全部开源的快速开发平台，毫无保留给个人及企业
 下一步的计划，把free打造成一款能够平滑无痛地向微服务演化的单应用框架。
 
 
-### [使用文档(持续更新中)](https://www.yuque.com/afeng-njhoy/azz7nx/vf1yxg)
+### <a href="https://www.yuque.com/afeng-njhoy/azz7nx/vf1yxg" target="_blank">使用文档(持续更新中)</a>
 
 
-* 感谢 [RuoYi](https://gitee.com/y_project/RuoYi) free项目使用了若依管理后台。
-* 感谢 [boot_master](https://gitee.com/bootstrap2table/boot_master) free项目参考了此开源项目。
+* 感谢 <a href="https://gitee.com/y_project/RuoYi" target="_blank">RuoYi</a> free项目参考了若依管理后台。
+* 感谢 <a href="https://gitee.com/bootstrap2table/boot_master" target="_blank">boot_master</a> free项目参考了此开源项目的部分权限设计。
 
 ### 核心依赖
 
