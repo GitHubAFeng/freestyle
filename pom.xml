@@ -6,9 +6,10 @@
     <groupId>free</groupId>
     <artifactId>free</artifactId>
     <version>1.0.0</version>
-    <!--<packaging>jar</packaging>-->
+    <!--打包jar-->
+    <packaging>jar</packaging>
     <!--打包war-->
-    <packaging>war</packaging>
+    <!--<packaging>war</packaging>-->
 
     <name>free</name>
     <description>一款灵活的API开发框架</description>
@@ -82,26 +83,13 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-tomcat</artifactId>
-            <!--用于打包war时排除tomcat,如果打包jar时则注释-->
-            <scope>provided</scope>
-            <!--用于打包war时排除tomcat,如果打包jar时则注释-->
+            <!--用于打包war时排除内置tomcat,如果打包jar时则注释-->
+            <!--<scope>provided</scope>-->
+            <!--用于打包war时排除内置tomcat,如果打包jar时则注释-->
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
-            <exclusions>
-                <!--用于打包war时排除tomcat,如果打包jar时则注释-->
-                <exclusion>
-                    <groupId>org.springframework.boot</groupId>
-                    <artifactId>spring-boot-starter-tomcat</artifactId>
-                </exclusion>
-                <!--用于打包war时排除tomcat,如果打包jar时则注释-->
-                <!--排除这个slf4j-log4j12-->
-                <exclusion>
-                    <groupId>org.slf4j</groupId>
-                    <artifactId>slf4j-log4j12</artifactId>
-                </exclusion>
-            </exclusions>
         </dependency>
         <!-- SpringBoot集成thymeleaf模板 -->
         <dependency>
