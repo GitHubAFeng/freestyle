@@ -5,7 +5,6 @@ import com.alibaba.fastjson.JSON;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
-import org.aspectj.lang.annotation.Pointcut;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -33,18 +32,14 @@ public class LogRecordAspect {
 
 
     // 定义切点Pointcut
-    @Pointcut("execution(* com.afeng.module.*.controller..*.*(..))")
-    public void excudeService() {
-    }
-
-
-    @Around("excudeService()")
+    @Around("execution(* com.afeng.module.*.controller..*.*(..))")
     public Object doAround(ProceedingJoinPoint pjp) throws Throwable {
         if (!isEnabled) {
             return pjp.proceed();
         }
         RequestAttributes ra = RequestContextHolder.getRequestAttributes();
         ServletRequestAttributes sra = (ServletRequestAttributes) ra;
+        if (sra == null) return pjp.proceed();
         HttpServletRequest request = sra.getRequest();
         String methodName = pjp.getSignature().getName();
         String url = request.getRequestURL().toString();

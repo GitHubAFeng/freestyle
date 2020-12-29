@@ -18,7 +18,7 @@ import org.springframework.stereotype.Component;
 import java.lang.reflect.Method;
 
 /**
- * 数据过滤处理
+ * 管理后台权限，数据过滤处理
  *
  * @author ruoyi
  */
@@ -55,8 +55,17 @@ public class DataScopeAspect {
      */
     public static final String DATA_SCOPE = "dataScope";
 
-    // 配置织入点
+
     @Pointcut("@annotation(com.afeng.module.admin.aspectj.lang.annotation.DataScope)")
+    private void logAnnotation() {
+    }
+
+    @Pointcut("execution(public * com.afeng.module.admin..*(..))")
+    private void logModule() {
+    }
+
+    // 配置织入点
+    @Pointcut("logAnnotation() && logModule()")
     public void dataScopePointCut() {
     }
 
@@ -65,7 +74,7 @@ public class DataScopeAspect {
         handleDataScope(point);
     }
 
-    protected void handleDataScope(final JoinPoint joinPoint) {
+    private void handleDataScope(final JoinPoint joinPoint) {
         // 获得注解
         DataScope controllerDataScope = getAnnotationLog(joinPoint);
         if (controllerDataScope == null) {
@@ -90,7 +99,7 @@ public class DataScopeAspect {
      * @param deptAlias 部门别名
      * @param userAlias 用户别名
      */
-    public static void dataScopeFilter(JoinPoint joinPoint, User user, String deptAlias, String userAlias) {
+    private static void dataScopeFilter(JoinPoint joinPoint, User user, String deptAlias, String userAlias) {
         StringBuilder sqlString = new StringBuilder();
 
         for (Role role : user.getRoles()) {

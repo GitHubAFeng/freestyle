@@ -29,7 +29,7 @@ public class CustomTask {
     /**
      * 设置每6秒执行一次
      **/
-    @Scheduled(cron = "*/6 * * * * ?")
+//    @Scheduled(cron = "*/6 * * * * ?") //使用时打开
     private void process2() {
         log.debug("now time is " + dateFormat.format(new Date()));
     }

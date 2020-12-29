@@ -267,8 +267,6 @@ public class UserServiceImpl implements IUserService {
 
     /**
      * 新增用户角色信息
-     *
-     * @param user 用户对象
      */
     public void insertUserRole(Long userId, Long[] roleIds) {
         if (StringUtils.isNotNull(roleIds)) {

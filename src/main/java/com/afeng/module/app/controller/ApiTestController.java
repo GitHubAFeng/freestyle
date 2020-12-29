@@ -17,8 +17,11 @@ import com.afeng.module.app.service.AppUserService;
 import com.afeng.module.common.dao.BaseDao;
 import com.afeng.module.common.dao.CommonDao;
 import com.alibaba.fastjson.JSON;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.mybatis.spring.SqlSessionTemplate;
+import org.redisson.api.RLock;
+import org.redisson.api.RedissonClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.task.TaskExecutor;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -37,6 +40,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Callable;
 import java.util.concurrent.FutureTask;
+import java.util.concurrent.TimeUnit;
 
 /**
  * ClassName: ApiTestController
@@ -46,6 +50,7 @@ import java.util.concurrent.FutureTask;
  * @author afeng
  * @since JDK 1.8
  */
+@Slf4j
 @Validated
 @RestController
 @RequestMapping("/api/test")
@@ -337,6 +342,53 @@ public class ApiTestController extends BaseApiController {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+
+    @Autowired
+    private RedissonClient redissonClient;
+
+    /**
+     * 分布式锁
+     *
+     * @author AFeng
+     * @createDate 2020/12/29 16:45
+     **/
+    @GetMapping("/testRedisLock")
+    public ApiResult testRedisLock() {
+        String uid = getParameter("uid");
+        RLock lock = null;
+        try {
+            String lockKey = "RedisLock:" + "testRedisLock:" + uid;
+            lock = redissonClient.getFairLock(lockKey);//公平锁
+            if (lock != null) {
+                // 尝试加锁，最多等待3000毫秒，上锁以后6000毫秒自动解锁
+                Boolean status = lock.tryLock(3000, 6000, TimeUnit.MILLISECONDS);
+                if (status) {
+                    log.info("==============获得分布式锁成功===============");
+                } else {
+                    log.info("==============获得分布式锁失败===============");
+                }
+            } else {
+                throw new IllegalArgumentException("==============分布式锁配置参数错误===============");
+            }
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+            log.error("==============处理分布式锁异常===============" + e.getMessage());
+        } finally {
+            if (lock != null) {
+                if (lock.isHeldByCurrentThread()) {
+                    log.info("==============释放分布式锁成功===============");
+                    lock.unlock();
+                } else {
+                    log.info("==============系统已回收分布式锁=============");
+                }
+            } else {
+                log.info("==============系统已回收分布式锁=============");
+            }
+        }
+        log.debug("调用testRedisLock……");
+        return success();
     }
 
 

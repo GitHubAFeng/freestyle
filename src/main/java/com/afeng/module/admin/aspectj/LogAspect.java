@@ -24,7 +24,8 @@ import java.lang.reflect.Method;
 import java.util.Map;
 
 /**
- * 操作日志记录处理
+ * 管理后台操作日志记录处理
+ * 参考 https://www.cnblogs.com/liaojie970/p/7883687.html
  *
  * @author ruoyi
  */
@@ -33,8 +34,17 @@ import java.util.Map;
 public class LogAspect {
     private static final Logger log = LoggerFactory.getLogger(LogAspect.class);
 
-    // 配置织入点
+
     @Pointcut("@annotation(com.afeng.module.admin.aspectj.lang.annotation.Log)")
+    private void logAnnotation() {
+    }
+
+    @Pointcut("execution(public * com.afeng.module.admin..*(..))")
+    private void logModule() {
+    }
+
+    // 配置织入点
+    @Pointcut("logAnnotation() && logModule()")
     public void logPointCut() {
     }
 
@@ -59,7 +69,7 @@ public class LogAspect {
         handleLog(joinPoint, e, null);
     }
 
-    protected void handleLog(final JoinPoint joinPoint, final Exception e, Object jsonResult) {
+    private void handleLog(final JoinPoint joinPoint, final Exception e, Object jsonResult) {
         try {
             // 获得注解
             Log controllerLog = getAnnotationLog(joinPoint);
@@ -117,7 +127,7 @@ public class LogAspect {
      * @param operLog 操作日志
      * @throws Exception
      */
-    public void getControllerMethodDescription(Log log, OperLog operLog) throws Exception {
+    private void getControllerMethodDescription(Log log, OperLog operLog) throws Exception {
         // 设置action动作
         operLog.setBusinessType(log.businessType().ordinal());
         // 设置标题
@@ -133,9 +143,6 @@ public class LogAspect {
 
     /**
      * 获取请求的参数，放到log中
-     *
-     * @param operLog
-     * @param request
      */
     private void setRequestValue(OperLog operLog) {
         Map<String, String[]> map = ServletUtils.getRequest().getParameterMap();
