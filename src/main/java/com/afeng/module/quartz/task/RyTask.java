@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
  * 定时任务调度测试
  *
  * @author ruoyi
+ * @Description 此定时任务由管理后台动态执行(数据库持久化)
  */
 @Slf4j
 @Component("ryTask")

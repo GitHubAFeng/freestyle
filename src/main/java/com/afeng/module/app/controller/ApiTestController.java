@@ -6,6 +6,7 @@ import com.afeng.common.mq.config.MqEventModel;
 import com.afeng.common.mq.config.MqEventType;
 import com.afeng.common.token.ApiSessionUtil;
 import com.afeng.common.token.JwtUtil;
+import com.afeng.common.util.QRCodeUtil;
 import com.afeng.common.util.RedisMQUtil;
 import com.afeng.common.util.SignUtil;
 import com.afeng.framework.annotation.ApiAuth;
@@ -27,7 +28,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.imageio.ImageIO;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.constraints.NotEmpty;
+import java.awt.image.BufferedImage;
+import java.net.URLDecoder;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Callable;
@@ -307,6 +312,31 @@ public class ApiTestController extends BaseApiController {
         taskExecutor.execute(task);    //为提升访问速率, 日志记录采用异步的方式进行.
 
         return success();
+    }
+
+
+    /**
+     * 返回二维码图片流
+     *
+     * @author AFeng
+     * @createDate 2020/12/28 17:54
+     **/
+    @RequestMapping("/appGetQrCode")
+    public void appGetQrCode(HttpServletResponse response) {
+        try {
+            String data = getParameter("data");//转码链接
+            if (org.apache.commons.lang3.StringUtils.isNotEmpty(data)) {
+                data = URLDecoder.decode(data, "UTF-8");
+                BufferedImage image = QRCodeUtil.createImage(data);
+                ImageIO.write(image, "png", response.getOutputStream());
+
+                response.setHeader("Access-Control-Allow-Origin", "*");
+                response.setContentType("image/png");
+                response.flushBuffer();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 
