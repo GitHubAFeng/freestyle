@@ -197,16 +197,11 @@
             <version>3.4.0</version>
         </dependency>
 
-        <!--zxing google qrcode -->
+        <!--zxing google qrcode 二维码工具包 -->
         <dependency>
             <groupId>com.google.zxing</groupId>
             <artifactId>core</artifactId>
-            <version>3.0.0</version>
-        </dependency>
-        <dependency>
-            <groupId>com.google.zxing</groupId>
-            <artifactId>javase</artifactId>
-            <version>3.0.0</version>
+            <version>3.4.1</version>
         </dependency>
         <!-- apache系列工具包 -->
         <dependency>
@@ -303,14 +298,8 @@
 
         <!-- 定时任务 -->
         <dependency>
-            <groupId>org.quartz-scheduler</groupId>
-            <artifactId>quartz</artifactId>
-            <exclusions>
-                <exclusion>
-                    <groupId>com.mchange</groupId>
-                    <artifactId>c3p0</artifactId>
-                </exclusion>
-            </exclusions>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-quartz</artifactId>
         </dependency>
 
         <!-- 解析客户端操作系统、浏览器等 -->
