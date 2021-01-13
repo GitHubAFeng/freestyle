@@ -42,7 +42,6 @@ public class HomeController extends BaseApiController {
 
 
     @ApiOperation("刷新API接口的权限session")
-    @ApiImplicitParam(name = "token", value = "用户当前token", dataType = "String")
     @GetMapping("/refreshToken")
     @ResponseBody
     public ApiResult refreshToken() {
@@ -55,7 +54,6 @@ public class HomeController extends BaseApiController {
     }
 
     @ApiOperation("清除某个缓存")
-    @ApiImplicitParam(name = "key", value = "需要删除的缓存key", dataType = "String")
     @PostMapping("/redis/cleanCacheByKey")
     @ResponseBody
     public ApiResult cleanCacheByKey(@NotEmpty(message = "key不能为空") String key) {
@@ -63,7 +61,6 @@ public class HomeController extends BaseApiController {
     }
 
     @ApiOperation("清除某类缓存")
-    @ApiImplicitParam(name = "key", value = "需要模糊删除的缓存key，例如RATE_LIMITER:*，其中 * 为匹配符", dataType = "String")
     @PostMapping("/redis/cleanCacheByLikeKey")
     @ResponseBody
     public ApiResult cleanCacheByLikeKey(@NotEmpty(message = "key不能为空") String key) {

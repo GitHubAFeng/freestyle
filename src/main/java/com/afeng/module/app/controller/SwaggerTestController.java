@@ -73,7 +73,6 @@ public class SwaggerTestController extends BaseController {
     }
 
     @ApiOperation("获取用户详细")
-    @ApiImplicitParam(name = "userId", value = "用户ID", required = true, dataType = "int", paramType = "path")
     @GetMapping("/{userId}")
     public AjaxResult getUser(@PathVariable Integer userId) {
         if (!users.isEmpty() && users.containsKey(userId)) {
@@ -84,7 +83,6 @@ public class SwaggerTestController extends BaseController {
     }
 
     @ApiOperation("新增用户")
-    @ApiImplicitParam(name = "userEntity", value = "新增用户信息", dataType = "UserEntity")
     @PostMapping("/save")
     public AjaxResult save(UserEntity user) {
         if (StringUtils.isNull(user) || StringUtils.isNull(user.getUserId())) {
@@ -94,7 +92,6 @@ public class SwaggerTestController extends BaseController {
     }
 
     @ApiOperation("更新用户")
-    @ApiImplicitParam(name = "userEntity", value = "新增用户信息", dataType = "UserEntity")
     @PutMapping("/update")
     public AjaxResult update(UserEntity user) {
         if (StringUtils.isNull(user) || StringUtils.isNull(user.getUserId())) {
@@ -108,7 +105,6 @@ public class SwaggerTestController extends BaseController {
     }
 
     @ApiOperation("删除用户信息")
-    @ApiImplicitParam(name = "userId", value = "用户ID", required = true, dataType = "int", paramType = "path")
     @DeleteMapping("/{userId}")
     public AjaxResult delete(@PathVariable Integer userId) {
         if (!users.isEmpty() && users.containsKey(userId)) {
