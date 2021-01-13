@@ -7,9 +7,15 @@
     <artifactId>free</artifactId>
     <version>1.0.0</version>
     <!--打包jar-->
-    <packaging>jar</packaging>
+    <!--<packaging>jar</packaging>-->
     <!--打包war-->
     <!--<packaging>war</packaging>-->
+    <packaging>pom</packaging>
+
+    <!-- 模块说明：这里声明多个子模块 -->
+    <modules>
+        <module>rpc</module>
+    </modules>
 
     <name>free</name>
     <description>一款灵活的API开发框架</description>
@@ -364,6 +370,14 @@
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <scope>provided</scope>
+        </dependency>
+
+        <!--远程服务-->
+        <dependency>
+            <groupId>free</groupId>
+            <artifactId>rpc</artifactId>
+            <version>1.0.0</version>
+            <scope>compile</scope>
         </dependency>
 
 

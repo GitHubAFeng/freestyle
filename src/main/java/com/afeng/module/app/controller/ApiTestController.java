@@ -16,12 +16,15 @@ import com.afeng.module.app.model.AppUser;
 import com.afeng.module.app.service.AppUserService;
 import com.afeng.module.common.dao.BaseDao;
 import com.afeng.module.common.dao.CommonDao;
+import com.afeng.rpc.service.TestRPCService;
 import com.alibaba.fastjson.JSON;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.redisson.api.RLock;
+import org.redisson.api.RRemoteService;
 import org.redisson.api.RedissonClient;
+import org.redisson.api.RemoteInvocationOptions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.task.TaskExecutor;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -366,6 +369,9 @@ public class ApiTestController extends BaseApiController {
                 Boolean status = lock.tryLock(3000, 6000, TimeUnit.MILLISECONDS);
                 if (status) {
                     log.info("==============获得分布式锁成功===============");
+                    System.err.println("开始执行业务逻辑");
+                    TimeUnit.SECONDS.sleep(20);
+                    System.err.println("业务逻辑执行完毕");
                 } else {
                     log.info("==============获得分布式锁失败===============");
                 }
@@ -389,6 +395,26 @@ public class ApiTestController extends BaseApiController {
         }
         log.debug("调用testRedisLock……");
         return success();
+    }
+
+
+    /**
+     * RPC远程服务调用测试
+     *
+     * @author AFeng
+     * @createDate 2020/12/30 16:18
+     **/
+    @GetMapping("/testRedissonRpc")
+    public ApiResult testRedissonRpc() {
+        //获取Redisson远程服务
+        RRemoteService remoteService = redissonClient.getRemoteService();
+        //应答回执超时1秒钟，远程执行超时30秒钟
+        RemoteInvocationOptions options = RemoteInvocationOptions.defaults();
+        //拿到生产端的接口
+        TestRPCService testRPCService = remoteService.get(TestRPCService.class, options);
+        //调用
+        String msg = testRPCService.testStr("哈喽");
+        return success(msg);
     }
 
 
