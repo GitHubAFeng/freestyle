@@ -1,13 +1,4 @@
-﻿# Host: localhost  (Version: 5.5.53)
-# Date: 2020-11-29 13:42:52
-# Generator: MySQL-Front 5.3  (Build 4.234)
-
-/*!40101 SET NAMES utf8 */;
-
-#
-# Structure for table "app_user"
-#
-
+﻿
 DROP TABLE IF EXISTS `app_user`;
 CREATE TABLE `app_user` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
