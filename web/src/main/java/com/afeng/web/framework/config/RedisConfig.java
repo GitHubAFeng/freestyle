@@ -34,6 +34,7 @@ import org.springframework.data.redis.listener.adapter.MessageListenerAdapter;
 import org.springframework.data.redis.serializer.RedisSerializationContext;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
+import org.springframework.session.data.redis.config.annotation.web.http.EnableRedisHttpSession;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
 
@@ -47,6 +48,7 @@ import java.util.Map;
  */
 @Slf4j
 @Configuration
+@EnableRedisHttpSession
 @EnableCaching
 @AutoConfigureAfter({RedisMessageListener.class})
 @ConditionalOnClass(RedisOperations.class)

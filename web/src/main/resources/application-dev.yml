@@ -18,7 +18,7 @@ server:
 spring:
   profiles:
     # 配置数据源db-sqlserver / db-mysql
-    include: db-sqlserver
+    include: db-mysql
 
   # 模板引擎
   thymeleaf:

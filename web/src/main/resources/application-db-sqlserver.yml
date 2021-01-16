@@ -4,9 +4,9 @@ spring:
     # 使用sqlServer数据库
     type: com.alibaba.druid.pool.DruidDataSource
     driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
-    url: jdbc:sqlserver://39.98.253.222:1433;SelectMethod=cursor;DatabaseName=wxmp
+    url: jdbc:sqlserver://127.0.0.1:1433;SelectMethod=cursor;DatabaseName=free
     username: sa
-    password: bd123456
+    password: 123456
 
     # druid连接池配置
     druid:

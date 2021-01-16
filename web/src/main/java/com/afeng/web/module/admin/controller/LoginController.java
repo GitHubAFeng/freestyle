@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
@@ -87,7 +88,8 @@ public class LoginController extends BaseController {
         String ip = IpUtils.getIpAddr(request);
         //验证码
         if (captchaEnabled) {
-            String captchaId = (String) request.getSession().getAttribute(com.google.code.kaptcha.Constants.KAPTCHA_SESSION_KEY);
+            HttpSession session = request.getSession();
+            String captchaId = (String) session.getAttribute(com.google.code.kaptcha.Constants.KAPTCHA_SESSION_KEY);
             if (!StringUtils.equals(captchaId, validateCode)) {
                 AsyncManager.me().execute(AsyncFactory.recordLogininfor(username, Constants.LOGIN_FAIL, ip, MessageUtils.message("user.jcaptcha.error")));
                 return error("验证码错误");
