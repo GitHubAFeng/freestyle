@@ -20,13 +20,14 @@ free 是一套全部开源的快速开发平台，毫无保留给个人及企业
 | 依赖                   | 版本          | 说明            |
 | ---------------------- | ------------- | ------------- |
 | Spring Boot            | 2.3.6.RELEASE | 系统核心框架  |
-| mybatis                | 2.1.4        |数据持久框架 |
-| Redis                  | 3.3.0        | 系统缓存框架  |
-| Redisson               | 3.11.4      |  后台session管理   |
-| Alibaba Druid          | 1.2.3       | 数据库连接池 |
+| mybatis                | last        |数据持久框架 |
+| Redis                  | last        | 系统缓存框架  |
+| Redisson               | last         |  分布式管理框架   |
+| Alibaba Druid          | last       | 数据库连接池 |
 | thymeleaf              | last        | 系统前端框架 |
 | JwtToken+AES           | last        | 安全授权框架 |
 | RedisMq                | last        | 系统消息队列 |
+| lombok                | last        | 注解库 |
 
 ### 模块说明
 
@@ -34,7 +35,8 @@ free 是一套全部开源的快速开发平台，毫无保留给个人及企业
 
 free
 ├── doc -- 文档、数据库文件
-└── afeng -- 系统公共模块
+├── rpc -- 远程服务模块
+└── web -- web/api服务模块
      ├── common -- 公共工具类核心包
      ├── framework -- 框架核心配置
      └── module -- 服务模块
