@@ -1,0 +1,495 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.afeng.web.module.common.dao.CommonDao">
+
+    <select id="selectList" parameterType="java.util.Map" resultType="java.util.Map" databaseId="mysql">
+        SELECT * FROM
+        ${tableName}
+        <where>
+            <foreach collection="params.keys" item="key" separator="AND">
+                <if test="params[key]!=null">
+                    ${key}=#{params[${key}]}
+                </if>
+            </foreach>
+        </where>
+    </select>
+
+    <select id="selectList" parameterType="java.util.Map" resultType="java.util.Map" databaseId="sqlserver">
+        SELECT * FROM
+        ${tableName} WITH(NOLOCK)
+        <where>
+            <foreach collection="params.keys" item="key" separator="AND">
+                <if test="params[key]!=null">
+                    ${key}=#{params[${key}]}
+                </if>
+            </foreach>
+        </where>
+    </select>
+
+    <select id="selectOne" parameterType="java.util.Map" resultType="java.util.Map" databaseId="mysql">
+        SELECT * FROM
+        ${tableName}
+        <where>
+            <foreach collection="params.keys" item="key" separator="AND">
+                <if test="params[key]!=null">
+                    ${key}=#{params[${key}]}
+                </if>
+            </foreach>
+        </where>
+    </select>
+
+    <select id="selectOne" parameterType="java.util.Map" resultType="java.util.Map" databaseId="sqlserver">
+        SELECT * FROM
+        ${tableName} WITH(NOLOCK)
+        <where>
+            <foreach collection="params.keys" item="key" separator="AND">
+                <if test="params[key]!=null">
+                    ${key}=#{params[${key}]}
+                </if>
+            </foreach>
+        </where>
+    </select>
+
+    <insert id="insert" parameterType="java.util.Map">
+        INSERT INTO ${tableName}
+        <foreach collection="params.keys" item="key" open="(" close=")" separator=",">
+            <if test="key != 'id'">
+                ${key}
+            </if>
+        </foreach>
+        VALUES
+        <foreach collection="params.keys" item="key" open="(" close=")" separator=",">
+            <if test="key != 'id'">
+                #{params[${key}]}
+            </if>
+        </foreach>
+    </insert>
+
+    <insert id="insertIgnore" parameterType="java.util.Map">
+        INSERT IGNORE INTO ${tableName}
+        <foreach collection="params.keys" item="key" open="(" close=")" separator=",">
+            <if test="key != 'id'">
+                ${key}
+            </if>
+        </foreach>
+        VALUES
+        <foreach collection="params.keys" item="key" open="(" close=")" separator=",">
+            <if test="key != 'id'">
+                #{params[${key}]}
+            </if>
+        </foreach>
+    </insert>
+
+    <insert id="insertRetId" parameterType="java.util.Map" useGeneratedKeys="true" keyProperty="params.id">
+        INSERT INTO ${tableName}
+        <foreach collection="params.keys" item="key" open="(" close=")" separator=",">
+            <if test="key != 'id'">
+                ${key}
+            </if>
+        </foreach>
+        VALUES
+        <foreach collection="params.keys" item="key" open="(" close=")" separator=",">
+            <if test="key != 'id'">
+                #{params[${key}]}
+            </if>
+        </foreach>
+    </insert>
+
+    <update id="update" parameterType="java.util.Map">
+        UPDATE ${tableName}
+        <set>
+            <foreach collection="params.keys" item="key" separator=",">
+                <if test="params[key] != null">
+                    ${key}=#{params[${key}]}
+                </if>
+            </foreach>
+        </set>
+        <where>
+            <if test="whereParams==null">
+                1=2
+            </if>
+            <if test="whereParams!=null">
+                <foreach collection="whereParams.keys" item="key" separator="AND">
+                    <if test="whereParams[key] != null">
+                        ${key}=#{whereParams[${key}]}
+                    </if>
+                </foreach>
+            </if>
+        </where>
+    </update>
+
+    <delete id="delete" parameterType="java.util.Map">
+        DELETE FROM ${tableName}
+        <where>
+            <if test="whereParams==null">
+                1=2
+            </if>
+            <if test="whereParams!=null">
+                <foreach collection="whereParams.keys" item="key" separator="AND">
+                    <if test="whereParams[key] != null">
+                        ${key}=#{whereParams[${key}]}
+                    </if>
+                </foreach>
+            </if>
+        </where>
+    </delete>
+
+    <update id="updateAdd" parameterType="java.util.Map">
+        UPDATE ${tableName}
+        <set>
+            <foreach collection="params.keys" item="key" separator=",">
+                <if test="params[key] != null">
+                    ${key} = ISNULL(${key},0) + #{params[${key}]}
+                </if>
+            </foreach>
+        </set>
+        <where>
+            <if test="whereParams==null">
+                1=2
+            </if>
+            <if test="whereParams!=null">
+                <foreach collection="whereParams.keys" item="key" separator="AND">
+                    <if test="whereParams[key] != null">
+                        ${key}=#{whereParams[${key}]}
+                    </if>
+                </foreach>
+            </if>
+        </where>
+    </update>
+
+    <delete id="deleteBySql" parameterType="java.lang.String">
+          ${sql}
+    </delete>
+
+    <update id="updateBySql" parameterType="java.lang.String">
+          ${sql}
+    </update>
+
+    <insert id="insertBySql" parameterType="java.lang.String" useGeneratedKeys="true" keyProperty="id">
+          ${sql}
+    </insert>
+
+    <select id="selectBySql" parameterType="java.lang.String" resultType="java.util.Map">
+          ${sql}
+    </select>
+
+    <select id="count" parameterType="java.util.Map" resultType="java.lang.Integer" databaseId="mysql">
+        SELECT COUNT(*) FROM
+        ${tableName}
+        <where>
+            <foreach collection="whereParams.keys" item="key" separator="AND">
+                <if test="whereParams[key]!=null">
+                    ${key}=#{whereParams[${key}]}
+                </if>
+            </foreach>
+        </where>
+    </select>
+
+    <select id="count" parameterType="java.util.Map" resultType="java.lang.Integer" databaseId="sqlserver">
+        SELECT COUNT(*) FROM
+        ${tableName} WITH(NOLOCK)
+        <where>
+            <foreach collection="whereParams.keys" item="key" separator="AND">
+                <if test="whereParams[key]!=null">
+                    ${key}=#{whereParams[${key}]}
+                </if>
+            </foreach>
+        </where>
+    </select>
+
+    <select id="selectByPageMySql" parameterType="java.util.Map" resultType="java.util.Map" databaseId="mysql">
+        SELECT * FROM
+        ${tableName}
+        <where>
+            <foreach collection="whereParams.keys" item="key" separator="AND">
+                <if test="whereParams[key]!=null">
+                    ${key}=#{whereParams[${key}]}
+                </if>
+            </foreach>
+        </where>
+        <if test="order!=null and order!=''">
+            order by #{order}
+        </if>
+        <if test="startNum!=null and endNum!=null">
+            limit ${startNum},${endNum}
+        </if>
+    </select>
+
+    <select id="selectByPageMMSql" parameterType="java.util.Map" resultType="java.util.Map" databaseId="sqlserver">
+        SELECT * FROM(
+        SELECT ROW_NUMBER() OVER(order by #{order}) as rowId,*
+        ${tableName} WITH(NOLOCK)
+        <where>
+            <foreach collection="whereParams.keys" item="key" separator="AND">
+                <if test="whereParams[key]!=null">
+                    ${key}=#{whereParams[${key}]}
+                </if>
+            </foreach>
+        </where>
+        ) as p WHERE p.rowId between (${pageNum}-1)*20 and ${pageNum}*20
+    </select>
+
+    <update id="updateAndAdd" parameterType="java.util.Map">
+        UPDATE ${tableName}
+        <set>
+            <foreach collection="addParams.keys" item="key" separator=",">
+                <if test="addParams[key] != null">
+                    ${key} = ISNULL(${key},0) + #{addParams[${key}]}
+                </if>
+            </foreach>
+            ,
+            <foreach collection="params.keys" item="key" separator=",">
+                <if test="params[key] != null">
+                    ${key} = #{params[${key}]}
+                </if>
+            </foreach>
+        </set>
+        <where>
+            <if test="whereParams==null">
+                1=2
+            </if>
+            <if test="whereParams!=null">
+                <foreach collection="whereParams.keys" item="key" separator="AND">
+                    <if test="whereParams[key] != null">
+                        ${key}=#{whereParams[${key}]}
+                    </if>
+                </foreach>
+            </if>
+        </where>
+    </update>
+
+    <select id="selectListByPageMySql" parameterType="java.util.Map" resultType="java.util.Map" databaseId="mysql">
+        SELECT * FROM
+        ${tableName}
+        <where>
+            <foreach collection="whereParams.keys" item="key" separator="AND">
+                <if test="whereParams[key]!=null">
+                    ${key}=#{whereParams[${key}]}
+                </if>
+            </foreach>
+        </where>
+        <if test="order!=null and order!=''">
+            order by #{order}
+        </if>
+        <if test="pageNum!=null and pageSize!=null">
+            limit ${(pageNum-1) * pageSize},${pageNum * pageSize}
+        </if>
+    </select>
+
+    <select id="selectListByPageMMSql" parameterType="java.util.Map" resultType="java.util.Map" databaseId="sqlserver">
+        SELECT * FROM(
+        SELECT ROW_NUMBER() OVER(order by #{order}) as rowId,*
+        ${tableName} WITH(NOLOCK)
+        <where>
+            <foreach collection="whereParams.keys" item="key" separator="AND">
+                <if test="whereParams[key]!=null">
+                    ${key}=#{whereParams[${key}]}
+                </if>
+            </foreach>
+        </where>
+        ) as p WHERE p.rowId between (${pageNum}-1) * ${pageSize} and ${pageNum} * ${pageSize}
+    </select>
+
+    <select id="selectListAndOrderBy" parameterType="java.util.Map" resultType="java.util.Map" databaseId="mysql">
+        SELECT * FROM
+        ${tableName}
+        <where>
+            <foreach collection="params.keys" item="key" separator="and">
+                <if test="params[key]!=null">
+                    ${key}=#{params[${key}]}
+                </if>
+            </foreach>
+        </where>
+        <if test="order!=null and order!=''">
+            order by #{order}
+        </if>
+    </select>
+
+    <select id="selectListAndOrderBy" parameterType="java.util.Map" resultType="java.util.Map" databaseId="sqlserver">
+        SELECT * FROM
+        ${tableName} WITH(NOLOCK)
+        <where>
+            <foreach collection="params.keys" item="key" separator="and">
+                <if test="params[key]!=null">
+                    ${key}=#{params[${key}]}
+                </if>
+            </foreach>
+        </where>
+        <if test="order!=null and order!=''">
+            order by #{order}
+        </if>
+    </select>
+
+    <select id="isExist" parameterType="java.util.Map" resultType="string" databaseId="mysql">
+        SELECT 1 FROM
+        ${tableName}
+        <where>
+            <foreach collection="whereParams.keys" item="key" separator="and">
+                <if test="whereParams[key]!=null">
+                    ${key}=#{whereParams[${key}]}
+                </if>
+            </foreach>
+        </where>
+    </select>
+
+    <select id="isExist" parameterType="java.util.Map" resultType="string" databaseId="sqlserver">
+        SELECT 1 FROM
+        ${tableName} WITH(NOLOCK)
+        <where>
+            <foreach collection="whereParams.keys" item="key" separator="and">
+                <if test="whereParams[key]!=null">
+                    ${key}=#{whereParams[${key}]}
+                </if>
+            </foreach>
+        </where>
+    </select>
+
+    <select id="selectOneByParam" parameterType="java.util.Map" resultType="java.util.Map" databaseId="mysql">
+        SELECT
+        <foreach collection="selectParams.entrySet()" item="value" index="key" separator=",">
+            <choose>
+                <when test='value!=null and value.toString().length()>2'>
+                    ${value}
+                </when>
+                <otherwise>
+                    ${key}
+                </otherwise>
+            </choose>
+        </foreach>
+        FROM
+        ${tableName}
+        <where>
+            <foreach collection="whereParams.keys" item="key" separator="AND">
+                <if test="whereParams[key]!=null">
+                    ${key}=#{whereParams[${key}]}
+                </if>
+            </foreach>
+        </where>
+    </select>
+
+    <select id="selectOneByParam" parameterType="java.util.Map" resultType="java.util.Map" databaseId="sqlserver">
+        SELECT
+        <foreach collection="selectParams.entrySet()" item="value" index="key" separator=",">
+            <choose>
+                <when test='value!=null and value.toString().length()>2'>
+                    ${value}
+                </when>
+                <otherwise>
+                    ${key}
+                </otherwise>
+            </choose>
+        </foreach>
+        FROM
+        ${tableName} WITH(NOLOCK)
+        <where>
+            <foreach collection="whereParams.keys" item="key" separator="AND">
+                <if test="whereParams[key]!=null">
+                    ${key}=#{whereParams[${key}]}
+                </if>
+            </foreach>
+        </where>
+    </select>
+
+
+    <select id="selectListByParam" parameterType="java.util.Map" resultType="java.util.Map" databaseId="mysql">
+        SELECT
+        <foreach collection="selectParams.entrySet()" item="value" index="key" separator=",">
+            <choose>
+                <when test='value!=null and value.toString().length()>2'>
+                    ${value}
+                </when>
+                <otherwise>
+                    ${key}
+                </otherwise>
+            </choose>
+        </foreach>
+        FROM
+        ${tableName}
+        <where>
+            <foreach collection="whereParams.keys" item="key" separator="AND">
+                <if test="whereParams[key]!=null">
+                    ${key}=#{whereParams[${key}]}
+                </if>
+            </foreach>
+        </where>
+    </select>
+
+    <select id="selectListByParam" parameterType="java.util.Map" resultType="java.util.Map" databaseId="sqlserver">
+        SELECT
+        <foreach collection="selectParams.entrySet()" item="value" index="key" separator=",">
+            <choose>
+                <when test='value!=null and value.toString().length()>2'>
+                    ${value}
+                </when>
+                <otherwise>
+                    ${key}
+                </otherwise>
+            </choose>
+        </foreach>
+        FROM
+        ${tableName} WITH(NOLOCK)
+        <where>
+            <foreach collection="whereParams.keys" item="key" separator="AND">
+                <if test="whereParams[key]!=null">
+                    ${key}=#{whereParams[${key}]}
+                </if>
+            </foreach>
+        </where>
+    </select>
+
+    <select id="selectListByParamAndOrder" parameterType="java.util.Map" resultType="java.util.Map" databaseId="mysql">
+        SELECT
+        <foreach collection="selectParams.entrySet()" item="value" index="key" separator=",">
+            <choose>
+                <when test='value!=null and value.toString().length()>2'>
+                    ${value}
+                </when>
+                <otherwise>
+                    ${key}
+                </otherwise>
+            </choose>
+        </foreach>
+        FROM
+        ${tableName}
+        <where>
+            <foreach collection="whereParams.keys" item="key" separator="AND">
+                <if test="whereParams[key]!=null">
+                    ${key}=#{whereParams[${key}]}
+                </if>
+            </foreach>
+        </where>
+        <if test="order!=null and order!=''">
+            order by #{order}
+        </if>
+    </select>
+
+    <select id="selectListByParamAndOrder" parameterType="java.util.Map" resultType="java.util.Map"
+            databaseId="sqlserver">
+        SELECT
+        <foreach collection="selectParams.entrySet()" item="value" index="key" separator=",">
+            <choose>
+                <when test='value!=null and value.toString().length()>2'>
+                    ${value}
+                </when>
+                <otherwise>
+                    ${key}
+                </otherwise>
+            </choose>
+        </foreach>
+        FROM
+        ${tableName} WITH(NOLOCK)
+        <where>
+            <foreach collection="whereParams.keys" item="key" separator="AND">
+                <if test="whereParams[key]!=null">
+                    ${key}=#{whereParams[${key}]}
+                </if>
+            </foreach>
+        </where>
+        <if test="order!=null and order!=''">
+            order by #{order}
+        </if>
+    </select>
+
+</mapper>

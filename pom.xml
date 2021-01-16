@@ -6,15 +6,13 @@
     <groupId>free</groupId>
     <artifactId>free</artifactId>
     <version>1.0.0</version>
-    <!--打包jar-->
-    <!--<packaging>jar</packaging>-->
-    <!--打包war-->
-    <!--<packaging>war</packaging>-->
+
     <packaging>pom</packaging>
 
     <!-- 模块说明：这里声明多个子模块 -->
     <modules>
         <module>rpc</module>
+        <module>web</module>
     </modules>
 
     <name>free</name>
@@ -55,31 +53,7 @@
         <maven.build.timestamp.format>yyyy-MM-dd HH</maven.build.timestamp.format>
     </properties>
 
-    <repositories>
-        <repository>
-            <id>public</id>
-            <name>aliyun nexus</name>
-            <url>http://maven.aliyun.com/nexus/content/groups/public/</url>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-        </repository>
-    </repositories>
-
-    <pluginRepositories>
-        <pluginRepository>
-            <id>public</id>
-            <name>aliyun nexus</name>
-            <url>http://maven.aliyun.com/nexus/content/groups/public/</url>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-        </pluginRepository>
-    </pluginRepositories>
-
+    <!-- 依赖声明 -->
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -215,6 +189,11 @@
             <artifactId>commons-lang</artifactId>
             <version>${commons.lang.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>3.11</version>
+        </dependency>
         <!-- 上传组件包 -->
         <dependency>
             <groupId>commons-fileupload</groupId>
@@ -287,8 +266,8 @@
         <!-- redission分布式锁 -->
         <dependency>
             <groupId>org.redisson</groupId>
-            <artifactId>redisson</artifactId>
-            <version>3.11.4</version>
+            <artifactId>redisson-spring-boot-starter</artifactId>
+            <version>3.14.1</version>
         </dependency>
         <!-- xstream  -->
         <dependency>
@@ -383,72 +362,45 @@
 
     </dependencies>
 
-    <!--maven打包时可选择环境-->
-    <profiles>
-        <!-- 开发环境 -->
-        <profile>
-            <id>dev</id>
-            <properties>
-                <package.environment>dev</package.environment>
-            </properties>
-            <!-- 是否默认 true表示默认-->
-            <activation>
-                <activeByDefault>true</activeByDefault>
-            </activation>
-        </profile>
-        <!-- 生产环境 -->
-        <profile>
-            <id>druid</id>
-            <properties>
-                <package.environment>druid</package.environment>
-            </properties>
-        </profile>
-    </profiles>
 
     <build>
-        <finalName>${project.name}</finalName>
         <plugins>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-                <configuration>
-                    <fork>true</fork> <!-- 如果没有该配置，devtools不会生效 -->
-                </configuration>
-            </plugin>
             <!-- 打包成可执行jar或者war,防止中文乱码，必须要下面这一个插件  -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
-                    <source>1.8</source>
-                    <target>1.8</target>
-                    <encoding>utf-8</encoding>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
+                    <encoding>${project.build.sourceEncoding}</encoding>
                 </configuration>
             </plugin>
-
         </plugins>
-        <!--本处需要，resources和java两个路径都指定-->
-        <resources>
-            <resource>
-                <directory>src/main/resources</directory>
-            </resource>
-            <!-- 打包时，将src/main/java路径下的mybatis执行sql的xml打入jar -->
-            <resource>
-                <directory>src/main/java</directory>
-                <includes>
-                    <include>**/*.xml</include>
-                </includes>
-            </resource>
-            <!--按配置选择打包-->
-            <resource>
-                <directory>src/main/resources</directory>
-                <filtering>true</filtering>
-                <includes>
-                    <include>application.yml</include>
-                    <include>application-${package.environment}.yml</include>
-                    <include>**/*.xml</include>
-                </includes>
-            </resource>
-        </resources>
     </build>
+
+    <repositories>
+        <repository>
+            <id>public</id>
+            <name>aliyun nexus</name>
+            <url>http://maven.aliyun.com/nexus/content/groups/public/</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+        </repository>
+    </repositories>
+
+    <pluginRepositories>
+        <pluginRepository>
+            <id>public</id>
+            <name>aliyun nexus</name>
+            <url>http://maven.aliyun.com/nexus/content/groups/public/</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </pluginRepository>
+    </pluginRepositories>
+
 </project>
