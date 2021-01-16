@@ -141,6 +141,11 @@ public class ApiTestController extends BaseApiController {
         where.put("operId", 1);
         Map<String, Object> logData = baseDao.selectOne("findOperLog", where);
 
+        Param = new HashMap<>();
+        Param.put("role_id", 2);
+        Param.put("menu_id", 1);
+        commonDao.insertIgnore("sys_role_menu", Param);
+
         Map<String, Object> reMap = new HashMap<>();
         reMap.put("sqlSessionTemplate", object);
         reMap.put("sysOperLog", sysOperLog);
