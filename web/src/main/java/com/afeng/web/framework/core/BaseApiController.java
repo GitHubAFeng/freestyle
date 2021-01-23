@@ -2,6 +2,7 @@ package com.afeng.web.framework.core;
 
 
 import com.afeng.web.framework.core.constant.ApiResult;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.servlet.http.HttpServletRequest;
@@ -18,6 +19,7 @@ import java.nio.charset.StandardCharsets;
  * @author afeng
  * @since JDK 1.8
  */
+@Slf4j
 public class BaseApiController {
 
     @Autowired
@@ -59,7 +61,7 @@ public class BaseApiController {
             }
             param = sb.toString();
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error(e.getMessage(), e);
         }
         return param;
     }

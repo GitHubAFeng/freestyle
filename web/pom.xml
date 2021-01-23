@@ -12,10 +12,7 @@
     <name>web</name>
     <description>web服务入口</description>
 
-    <!--打包jar-->
-    <packaging>jar</packaging>
-    <!--打包war-->
-    <!--<packaging>war</packaging>-->
+    <packaging>${pom.package}</packaging>
 
     <dependencies>
 
@@ -33,21 +30,97 @@
     <profiles>
         <!-- 开发环境 -->
         <profile>
-            <id>dev</id>
-            <properties>
-                <package.environment>dev</package.environment>
-            </properties>
+            <id>jar(运行开发环境)</id>
             <!-- 是否默认 true表示默认-->
             <activation>
                 <activeByDefault>true</activeByDefault>
             </activation>
+            <properties>
+                <pom.package>jar</pom.package>
+                <pom.packageName>${project.artifactId}</pom.packageName>
+                <package.environment>dev</package.environment>
+                <!--日志文件保存目录放在项目下，这里${project.artifactId}为我们的工程项目名，自己根据实际修改-->
+                <profiles.logSavePath>./logs/${project.artifactId}/</profiles.logSavePath>
+                <!--上传文件保存目录放在项目下，这里${project.artifactId}为我们的工程项目名，自己根据实际修改-->
+                <profiles.uploadSavePath>./upload/${project.artifactId}/</profiles.uploadSavePath>
+            </properties>
+            <dependencies>
+                <dependency>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-starter-tomcat</artifactId>
+                </dependency>
+            </dependencies>
+        </profile>
+        <profile>
+            <id>war(运行开发环境)</id>
+            <properties>
+                <pom.package>war</pom.package>
+                <pom.packageName>${project.artifactId}</pom.packageName>
+                <package.environment>dev</package.environment>
+                <!--tomcat的bin目录为输出根目录起点-->
+                <!--日志文件保存目录放在项目下，这里${project.artifactId}为我们的工程项目名，自己根据实际修改-->
+                <profiles.logSavePath>./../webapps/${project.artifactId}/logs/</profiles.logSavePath>
+                <!--上传文件保存目录放在项目下，这里${project.artifactId}为我们的工程项目名，自己根据实际修改-->
+                <profiles.uploadSavePath>./../webapps/upload/${project.artifactId}/</profiles.uploadSavePath>
+            </properties>
+            <dependencies>
+                <dependency>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-starter-tomcat</artifactId>
+                    <scope>provided</scope>
+                </dependency>
+                <dependency>
+                    <groupId>javax.servlet</groupId>
+                    <artifactId>javax.servlet-api</artifactId>
+                    <scope>provided</scope>
+                </dependency>
+            </dependencies>
         </profile>
         <!-- 生产环境 -->
+        <!-- 打包jar部署 -->
         <profile>
-            <id>druid</id>
+            <id>jar(部署生产环境)</id>
             <properties>
+                <pom.package>jar</pom.package>
+                <pom.packageName>${project.artifactId}</pom.packageName>
                 <package.environment>druid</package.environment>
+                <!--日志文件保存目录放在项目下，这里${project.artifactId}为我们的工程项目名，自己根据实际修改-->
+                <profiles.logSavePath>./logs/${project.artifactId}/</profiles.logSavePath>
+                <!--上传文件保存目录放在项目下，这里${project.artifactId}为我们的工程项目名，自己根据实际修改-->
+                <profiles.uploadSavePath>./upload/${project.artifactId}/</profiles.uploadSavePath>
             </properties>
+            <dependencies>
+                <dependency>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-starter-tomcat</artifactId>
+                </dependency>
+            </dependencies>
+        </profile>
+        <!-- 打包war部署 -->
+        <profile>
+            <id>war(部署生产环境)</id>
+            <properties>
+                <pom.package>war</pom.package>
+                <pom.packageName>${project.artifactId}</pom.packageName>
+                <package.environment>druid</package.environment>
+                <!--tomcat的bin目录为输出根目录起点-->
+                <!--日志文件保存目录放在项目下，这里${project.artifactId}为我们的工程项目名，自己根据实际修改-->
+                <profiles.logSavePath>./../webapps/${project.artifactId}/logs/</profiles.logSavePath>
+                <!--上传文件保存目录放在项目下，这里${project.artifactId}为我们的工程项目名，自己根据实际修改-->
+                <profiles.uploadSavePath>./../webapps/upload/${project.artifactId}/</profiles.uploadSavePath>
+            </properties>
+            <dependencies>
+                <dependency>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-starter-tomcat</artifactId>
+                    <scope>provided</scope>
+                </dependency>
+                <dependency>
+                    <groupId>javax.servlet</groupId>
+                    <artifactId>javax.servlet-api</artifactId>
+                    <scope>provided</scope>
+                </dependency>
+            </dependencies>
         </profile>
     </profiles>
 
@@ -81,8 +154,10 @@
         <resources>
             <resource>
                 <directory>src/main/resources</directory>
+                <!--识别@标识符-->
+                <filtering>true</filtering>
             </resource>
-            <!-- 打包时，将src/main/java路径下的mybatis执行sql的xml打入jar -->
+            <!-- 打包时，将src/main/java路径下的mybatis执行sql的xml文件打入 -->
             <resource>
                 <directory>src/main/java</directory>
                 <includes>

@@ -1,5 +1,6 @@
 package com.afeng.web.module.app.controller;
 
+import com.afeng.rpc.service.TestRPCService;
 import com.afeng.web.common.cache.JedisUtil;
 import com.afeng.web.common.log.ApiLogUtils;
 import com.afeng.web.common.mq.config.MqEventModel;
@@ -9,6 +10,7 @@ import com.afeng.web.common.token.JwtUtil;
 import com.afeng.web.common.util.QRCodeUtil;
 import com.afeng.web.common.util.RedisMQUtil;
 import com.afeng.web.common.util.SignUtil;
+import com.afeng.web.common.util.SpringUtils;
 import com.afeng.web.framework.annotation.ApiAuth;
 import com.afeng.web.framework.core.BaseApiController;
 import com.afeng.web.framework.core.constant.ApiResult;
@@ -16,7 +18,6 @@ import com.afeng.web.module.app.model.AppUser;
 import com.afeng.web.module.app.service.AppUserService;
 import com.afeng.web.module.common.dao.BaseDao;
 import com.afeng.web.module.common.dao.CommonDao;
-import com.afeng.rpc.service.TestRPCService;
 import com.alibaba.fastjson.JSON;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -25,6 +26,7 @@ import org.redisson.api.RLock;
 import org.redisson.api.RRemoteService;
 import org.redisson.api.RedissonClient;
 import org.redisson.api.RemoteInvocationOptions;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.task.TaskExecutor;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -141,10 +143,11 @@ public class ApiTestController extends BaseApiController {
         where.put("operId", 1);
         Map<String, Object> logData = baseDao.selectOne("findOperLog", where);
 
-        Param = new HashMap<>();
-        Param.put("role_id", 2);
-        Param.put("menu_id", 1);
-        commonDao.insertIgnore("sys_role_menu", Param);
+        //在sqlserver下不稳定，时行时不行，知道原因的同学请告诉我
+//        Param = new HashMap<>();
+//        Param.put("role_id", 2);
+//        Param.put("menu_id", 1);
+//        commonDao.insertIgnore("sys_role_menu", Param);
 
         Map<String, Object> reMap = new HashMap<>();
         reMap.put("sqlSessionTemplate", object);
@@ -348,7 +351,7 @@ public class ApiTestController extends BaseApiController {
                 response.flushBuffer();
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error(e.getMessage(), e);
         }
     }
 
@@ -384,7 +387,6 @@ public class ApiTestController extends BaseApiController {
                 throw new IllegalArgumentException("==============分布式锁配置参数错误===============");
             }
         } catch (InterruptedException e) {
-            e.printStackTrace();
             log.error("==============处理分布式锁异常===============" + e.getMessage());
         } finally {
             if (lock != null && lock.isLocked()) {// 是否还是锁定状态
@@ -422,5 +424,22 @@ public class ApiTestController extends BaseApiController {
         return success(msg);
     }
 
+
+    @GetMapping("/testRpc")
+    public ApiResult testRpc() {
+        String text = getParameter("text");
+        String methodName = getParameter("method");
+        String serviceName = "testRPC";
+        Object invoke = SpringUtils.invokeServiceMethod(serviceName, methodName, text,"te222");
+
+        try {
+            int aa = 1/0;
+        } catch (Exception e) {
+            log.error(e.getMessage(),e);
+            LoggerFactory.getLogger("sys-user").error("线程池异步 记录日志失败", e);
+        }
+
+        return success(invoke);
+    }
 
 }

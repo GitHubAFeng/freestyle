@@ -7,7 +7,6 @@ import com.afeng.web.framework.filter.AuthHandlerMethodArgumentResolver;
 import com.afeng.web.framework.filter.rate.RateLimiterInterceptor;
 import com.afeng.web.module.common.constant.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
@@ -33,8 +32,6 @@ public class WebMvcConfig implements WebMvcConfigurer {
     @Autowired
     private AuthHandlerMethodArgumentResolver authHandlerMethodArgumentResolver;
 
-    @Value("${swagger.open:true}")
-    private Boolean isOpen;
 
     /**
      * 系统欢迎页面
@@ -53,15 +50,13 @@ public class WebMvcConfig implements WebMvcConfigurer {
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
 
         /*本地文件上传路径 */
-        registry.addResourceHandler(Constants.RESOURCE_PREFIX + "/**").addResourceLocations("file:" + AFengConfig.getProfile() + "/");
+        registry.addResourceHandler(Constants.RESOURCE_PREFIX + "/**").addResourceLocations("file:" + AFengConfig.getUploadSavePath() + "/");
 
         /*
          * 配置swagger映射路径
          */
-        if (isOpen) {
-            registry.addResourceHandler("swagger-ui.html").addResourceLocations("classpath:/META-INF/resources/");
-            registry.addResourceHandler("/webjars/**").addResourceLocations("classpath:/META-INF/resources/webjars/");
-        }
+        registry.addResourceHandler("swagger-ui.html").addResourceLocations("classpath:/META-INF/resources/");
+        registry.addResourceHandler("/webjars/**").addResourceLocations("classpath:/META-INF/resources/webjars/");
     }
 
     /**

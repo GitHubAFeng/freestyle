@@ -1,17 +1,20 @@
 package com.afeng.web.common.util;
 
+import lombok.extern.slf4j.Slf4j;
+
+import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
-import javax.servlet.http.HttpServletRequest;
 
 /**
  * Map通用处理方法
  *
  * @author ruoyi
  */
+@Slf4j
 public class MapDataUtil {
 
     public static Map<String, Object> convertDataMap(HttpServletRequest request) {
@@ -57,7 +60,7 @@ public class MapDataUtil {
                 // 得到此属性的值
                 map.put(f.getName(), val);// 设置键值
             } catch (IllegalArgumentException | IllegalAccessException e) {
-                e.printStackTrace();
+                log.error(e.getMessage(), e);
             }
         }
         return map;

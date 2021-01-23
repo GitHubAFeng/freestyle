@@ -7,7 +7,6 @@ import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -27,14 +26,12 @@ import java.util.Map;
 public class LogRecordAspect {
     private static final Logger logger = LoggerFactory.getLogger(LogRecordAspect.class);
 
-    @Value("${auto.log.enabled:true}")
-    private Boolean isEnabled;
-
 
     // 定义切点Pointcut
     @Around("execution(* com.afeng.web.module.*.controller..*.*(..))")
     public Object doAround(ProceedingJoinPoint pjp) throws Throwable {
-        if (!isEnabled) {
+        //判断Logger级别是否开启的方法
+        if (!logger.isDebugEnabled()) {
             return pjp.proceed();
         }
         RequestAttributes ra = RequestContextHolder.getRequestAttributes();

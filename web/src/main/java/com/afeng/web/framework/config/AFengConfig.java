@@ -44,7 +44,7 @@ public class AFengConfig {
     /**
      * 上传路径
      */
-    private static String profile;
+    private static String uploadSavePath;
 
     /**
      * 获取地址开关
@@ -83,12 +83,12 @@ public class AFengConfig {
         this.demoEnabled = demoEnabled;
     }
 
-    public static String getProfile() {
-        return profile;
+    public static String getUploadSavePath() {
+        return uploadSavePath;
     }
 
     public void setProfile(String profile) {
-        AFengConfig.profile = profile;
+        AFengConfig.uploadSavePath = profile;
     }
 
     public static boolean isAddressEnabled() {
@@ -119,20 +119,20 @@ public class AFengConfig {
      * 获取头像上传路径
      */
     public static String getAvatarPath() {
-        return getProfile() + "/avatar";
+        return getUploadSavePath() + "/avatar";
     }
 
     /**
      * 获取下载路径
      */
     public static String getDownloadPath() {
-        return getProfile() + "/download/";
+        return getUploadSavePath() + "/download/";
     }
 
     /**
      * 获取上传路径
      */
     public static String getUploadPath() {
-        return getProfile() + "/upload";
+        return getUploadSavePath() + "/upload";
     }
 }

@@ -1,5 +1,7 @@
 package com.afeng.web.common.util;
 
+import com.google.common.base.Joiner;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.aop.framework.AopContext;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
@@ -9,11 +11,12 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Component;
 
+import java.lang.reflect.Method;
+
 /**
  * spring工具类 方便在非spring管理环境中获取bean
- *
- * @author ruoyi
  */
+@Slf4j
 @Component
 public final class SpringUtils implements BeanFactoryPostProcessor, ApplicationContextAware {
 
@@ -108,12 +111,40 @@ public final class SpringUtils implements BeanFactoryPostProcessor, ApplicationC
 
     /**
      * 获取aop代理对象
-     *
-     * @param invoker
-     * @return
      */
     @SuppressWarnings("unchecked")
     public static <T> T getAopProxy(T invoker) {
         return (T) AopContext.currentProxy();
     }
+
+    /**
+     * 反射调用服务
+     */
+    @SuppressWarnings("unchecked")
+    public static Object invokeServiceMethod(String serviceName, String methodName, Object... args) {
+        try {
+            serviceName = serviceName + "ServiceImpl";
+            Object bean = SpringUtils.getBean(serviceName);
+            Class cls = bean.getClass();
+
+            Method m;
+            if (args.length == 0) {
+                m = cls.getDeclaredMethod(methodName);
+            } else {
+                Class<?>[] parameterTypes = new Class<?>[args.length];
+                for (int i = 0; i < args.length; i++) {
+                    parameterTypes[i] = args[i].getClass();
+                }
+                m = cls.getDeclaredMethod(methodName, parameterTypes);
+            }
+
+            return m.invoke(bean, args);
+        } catch (Exception e) {
+            log.error(e.getMessage()
+                    + " 反射调用服务出错: serviceName=" + serviceName
+                    + "&methodName=" + methodName + "&args=" + Joiner.on(",").join(args), e);
+        }
+        return null;
+    }
+
 }

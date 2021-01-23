@@ -47,8 +47,7 @@ public class AESUtil {
             byte[] result = cipher.doFinal(byteContent);
             return byteArr2HexStr(result);
         } catch (Exception e) {
-            e.printStackTrace();
-            logger.error("执行AESUtil.encrypt加密时异常:" + e);
+            logger.error("执行AESUtil.encrypt加密时异常:", e);
         }
         return null;
     }
@@ -82,8 +81,7 @@ public class AESUtil {
             byte[] result = cipher.doFinal(hexStr2ByteArr(content));
             return new String(result, "UTF-8");
         } catch (Exception e) {
-            e.printStackTrace();
-            logger.error("执行AESUtil.decrypt解时异常:" + e);
+            logger.error("执行AESUtil.decrypt解时异常:", e);
         }
         return null;
     }

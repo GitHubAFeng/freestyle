@@ -4,11 +4,13 @@ import com.afeng.web.common.log.ApiLogUtils;
 import com.afeng.web.common.util.SpringUtils;
 import com.afeng.web.module.app.event.AppUserLoginEvent;
 import com.afeng.web.module.app.model.AppUser;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.event.EventListener;
 import org.springframework.core.annotation.Order;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
+@Slf4j
 @Service
 public class AppUserService {
 
@@ -36,7 +38,7 @@ public class AppUserService {
             AppUser user = event.getEventData();
             ApiLogUtils.debugPrint("===> 收到事件: " + user.getId() + "，线程名为： " + Thread.currentThread().getName());
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error(e.getMessage(), e);
         }
     }
 

@@ -9,6 +9,7 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTDecodeException;
 import com.auth0.jwt.exceptions.TokenExpiredException;
 import com.auth0.jwt.interfaces.DecodedJWT;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateUtils;
 
@@ -26,6 +27,7 @@ import java.util.UUID;
  * @author afeng
  * @since JDK 1.8
  */
+@Slf4j
 public class JwtUtil {
 
     /**
@@ -77,7 +79,7 @@ public class JwtUtil {
                 return header.substring(7);//包括一个空格，所以7个字符
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error(e.getMessage(), e);
         }
         return null;
     }
@@ -141,7 +143,7 @@ public class JwtUtil {
             DecodedJWT jwt = JWT.decode(token);
             return jwt.getClaim(TOKEN_KEY).asString();
         } catch (JWTDecodeException e) {
-            e.printStackTrace();
+            log.error(e.getMessage(), e);
             //解码失败
         }
         return null;
@@ -165,7 +167,7 @@ public class JwtUtil {
                     .withClaim(TOKEN_KEY, encrypt) //携带数据
                     .sign(algorithm);
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error(e.getMessage(), e);
         }
         return null;
     }
@@ -192,7 +194,7 @@ public class JwtUtil {
                     .withJWTId(UUID.randomUUID().toString()) //编号
                     .sign(algorithm);
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error(e.getMessage(), e);
         }
         return null;
     }
@@ -220,7 +222,7 @@ public class JwtUtil {
 //            System.out.println(claim.asString());
             return jwt;
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error(e.getMessage(), e);
         }
         return null;
     }
@@ -244,7 +246,7 @@ public class JwtUtil {
             token = AESUtil.encrypt(token);
             return token;
         } catch (Exception ex) {
-            ex.printStackTrace();
+            log.error(ex.getMessage(), ex);
         }
         return null;
     }
@@ -279,7 +281,7 @@ public class JwtUtil {
                 }
             }
         } catch (Exception ex) {
-            ex.printStackTrace();
+            log.error(ex.getMessage(), ex);
         }
         return null;
     }

@@ -1,5 +1,7 @@
 package com.afeng.web.module.common.utils.bean;
 
+import lombok.extern.slf4j.Slf4j;
+
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
@@ -11,6 +13,7 @@ import java.util.regex.Pattern;
  *
  * @author ruoyi
  */
+@Slf4j
 public class BeanUtils extends org.springframework.beans.BeanUtils {
     /**
      * Bean方法名中属性名开始的下标
@@ -37,7 +40,7 @@ public class BeanUtils extends org.springframework.beans.BeanUtils {
         try {
             copyProperties(src, dest);
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error(e.getMessage(), e);
         }
     }
 

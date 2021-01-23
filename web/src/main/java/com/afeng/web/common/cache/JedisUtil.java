@@ -718,7 +718,7 @@ public class JedisUtil {
         try (Jedis jedis = jedisPool.getResource()) {
             return jedis.pttl(key);
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
         }
         return 0;
     }
@@ -847,9 +847,6 @@ public class JedisUtil {
 
     /**
      * 转换为字节数组
-     *
-     * @param str
-     * @return
      */
     public static String toString(byte[] bytes) {
         return new String(bytes, StandardCharsets.UTF_8);
@@ -857,8 +854,6 @@ public class JedisUtil {
 
     /**
      * 获取byte[]类型Key
-     *
-     * @return
      */
     private byte[] getBytesKey(Object object) {
         if (object instanceof String) {
@@ -870,9 +865,6 @@ public class JedisUtil {
 
     /**
      * 转换为字节数组
-     *
-     * @param str
-     * @return
      */
     private byte[] getBytes(String str) {
         if (str != null) {
@@ -911,7 +903,7 @@ public class JedisUtil {
                 return baos.toByteArray();
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
         }
         return null;
     }
@@ -928,7 +920,7 @@ public class JedisUtil {
                 return ois.readObject();
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
         }
         return null;
     }

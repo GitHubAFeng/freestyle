@@ -1,4 +1,7 @@
 spring:
+  application:
+    #设置当前应用的名称
+    name: free
   #启用环境配置(dev|druid)
   profiles:
     # 根据打包环境自动选择，默认为 dev
@@ -43,6 +46,11 @@ spring:
     store-type: REDIS
     # 管理后台admin-session 有效时间（秒）
     timeout: 3600ms
+
+  #根据控制台的情况确定是否输出彩色日志
+  output:
+    ansi:
+      enabled: DETECT
 
 # 输出编码格式
 server:
@@ -104,6 +112,8 @@ afeng:
   addressEnabled: false
   # 是否启用OSS，启用后上传文件将上传到云存储 true|false
   ossEnabled: true
-  # 本地文件上传路径，当前项目运行目录下的upload 示例（ Windows配置D:/ruoyi/uploadPath，Linux配置 /home/ruoyi/uploadPath）
-  profile: ${user.dir}/upload
+  # 上传文件保存路径
+  uploadSavePath: @profiles.uploadSavePath@
+  # 日志文件保存路径
+  logSavePath: @profiles.logSavePath@
 

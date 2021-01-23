@@ -1,39 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
-    <!-- 彩色日志依赖的渲染类 -->
-    <conversionRule conversionWord="clr" converterClass="org.springframework.boot.logging.logback.ColorConverter"/>
-    <conversionRule conversionWord="wex"
-                    converterClass="org.springframework.boot.logging.logback.WhitespaceThrowableProxyConverter"/>
-    <conversionRule conversionWord="wEx"
-                    converterClass="org.springframework.boot.logging.logback.ExtendedWhitespaceThrowableProxyConverter"/>
-    <!-- 彩色日志格式 -->
-    <property name="CONSOLE_LOG_PATTERN"
-              value="${CONSOLE_LOG_PATTERN:-%clr(%d{yyyy-MM-dd HH:mm:ss.SSS}){faint} %clr(${LOG_LEVEL_PATTERN:-%5p}) %clr([%15.15t]){faint} %clr(%-40.40logger{39}){cyan} %clr(:){faint} %m%n${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}}"/>
-
-    <!-- 日志存放路径 -->
-    <property name="log.path" value="${user.dir}/logs" scope="context" source="log.path"/>
-
-    <!-- 乱码问题 https://blog.csdn.net/weixin_41712059/article/details/86557779 -->
-    <!-- 日志文字编码格式 UTF-8 | GBK -->
-    <!--<property name="log.charset" value="GBK"/>-->
-    <property name="log.charset" value="UTF-8"/>
-
-    <!-- 控制台输出 -->
-    <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
-        <encoder>
-            <pattern>${CONSOLE_LOG_PATTERN}</pattern>
-            <charset class="java.nio.charset.Charset">${log.charset}</charset>
-        </encoder>
-    </appender>
+    <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
+    <include resource="org/springframework/boot/logging/logback/console-appender.xml"/>
+    <!--指向application.yml文件中的key-->
+    <springProperty scop="context" name="logPath" source="afeng.logSavePath" defaultValue="./logs/"/>
 
     <!-- 系统日志输出到文件 -->
-    <appender name="file_info" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>${log.path}/sys-info.log</file>
+    <appender name="file_warn" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${logPath}/warn.log</file>
         <append>true</append>
         <!-- 循环政策：基于时间创建日志文件 -->
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <!-- 日志文件名格式 -->
-            <fileNamePattern>${log.path}/sys-info.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <fileNamePattern>${logPath}/warn.%d{yyyy-MM-dd}.log</fileNamePattern>
             <!-- 日志保留天数 -->
             <maxHistory>30</maxHistory>
         </rollingPolicy>
@@ -42,12 +21,12 @@
             <MaxFileSize>10MB</MaxFileSize>
         </triggeringPolicy>
         <encoder>
-            <pattern>${CONSOLE_LOG_PATTERN}</pattern>
-            <charset class="java.nio.charset.Charset">${log.charset}</charset>
+            <pattern>${FILE_LOG_PATTERN}</pattern>
+            <charset>UTF-8</charset>
         </encoder>
         <filter class="ch.qos.logback.classic.filter.LevelFilter">
             <!-- 过滤的级别 -->
-            <level>INFO</level>
+            <level>WARN</level>
             <!-- 匹配时的操作：接收（记录） -->
             <onMatch>ACCEPT</onMatch>
             <!-- 不匹配时的操作：拒绝（不记录） -->
@@ -56,11 +35,11 @@
     </appender>
 
     <appender name="file_error" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>${log.path}/sys-error.log</file>
+        <file>${logPath}/error.log</file>
         <!-- 循环政策：基于时间创建日志文件 -->
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <!-- 日志文件名格式 -->
-            <fileNamePattern>${log.path}/sys-error.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <fileNamePattern>${logPath}/error.%d{yyyy-MM-dd}.log</fileNamePattern>
             <!-- 日志最大的历史天 -->
             <maxHistory>30</maxHistory>
         </rollingPolicy>
@@ -69,8 +48,8 @@
             <MaxFileSize>10MB</MaxFileSize>
         </triggeringPolicy>
         <encoder>
-            <pattern>${CONSOLE_LOG_PATTERN}</pattern>
-            <charset class="java.nio.charset.Charset">${log.charset}</charset>
+            <pattern>${FILE_LOG_PATTERN}</pattern>
+            <charset>UTF-8</charset>
         </encoder>
         <filter class="ch.qos.logback.classic.filter.LevelFilter">
             <!-- 过滤的级别 -->
@@ -84,10 +63,10 @@
 
     <!-- 用户访问日志输出  -->
     <appender name="sys-user" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>${log.path}/sys-user.log</file>
+        <file>${logPath}/sys-user.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <!-- 按天回滚 daily -->
-            <fileNamePattern>${log.path}/sys-user.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <fileNamePattern>${logPath}/sys-user.%d{yyyy-MM-dd}.log</fileNamePattern>
             <!-- 日志最大的历史 30天 -->
             <maxHistory>30</maxHistory>
         </rollingPolicy>
@@ -96,27 +75,35 @@
             <MaxFileSize>10MB</MaxFileSize>
         </triggeringPolicy>
         <encoder>
-            <pattern>${CONSOLE_LOG_PATTERN}</pattern>
-            <charset class="java.nio.charset.Charset">${log.charset}</charset>
+            <pattern>${FILE_LOG_PATTERN}</pattern>
+            <charset>UTF-8</charset>
         </encoder>
     </appender>
 
-    <!-- 系统模块日志级别控制  -->
-    <logger name="com.afeng" level="debug"/>
-    <!-- Spring日志级别控制  -->
-    <logger name="org.springframework" level="warn"/>
+    <!-- 测试环境+开发环境. 多个使用逗号隔开如test,dev -->
+    <springProfile name="dev">
+        <!--日志级别控制-->
+        <!-- Level: FATAL 0  ERROR 3  WARN 4  INFO 6  DEBUG 7 -->
+        <root level="INFO">
+            <appender-ref ref="CONSOLE"/>
+            <appender-ref ref="file_warn"/>
+            <appender-ref ref="file_error"/>
+        </root>
+    </springProfile>
 
-    <root level="info">
-        <appender-ref ref="console"/>
-    </root>
-
-    <!--系统操作日志-->
-    <root level="info">
-        <appender-ref ref="file_info"/>
-        <appender-ref ref="file_error"/>
-    </root>
+    <!-- 生产环境 -->
+    <springProfile name="druid">
+        <!--日志级别控制-->
+        <!-- Level: FATAL 0  ERROR 3  WARN 4  INFO 6  DEBUG 7 -->
+        <root level="ERROR">
+            <appender-ref ref="CONSOLE"/>
+            <appender-ref ref="file_warn"/>
+            <appender-ref ref="file_error"/>
+        </root>
+    </springProfile>
 
     <!--系统用户操作日志-->
+    <!--使用此标记保存自定义日志 LoggerFactory.getLogger("sys-user").error("线程池异步 记录日志失败", e)-->
     <logger name="sys-user" level="info">
         <appender-ref ref="sys-user"/>
     </logger>

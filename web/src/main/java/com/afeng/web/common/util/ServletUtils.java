@@ -2,6 +2,7 @@ package com.afeng.web.common.util;
 
 import com.afeng.web.module.common.utils.StringUtils;
 import com.afeng.web.module.common.utils.text.Convert;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -16,6 +17,7 @@ import java.io.IOException;
  *
  * @author ruoyi
  */
+@Slf4j
 public class ServletUtils {
     /**
      * 获取String参数
@@ -84,7 +86,7 @@ public class ServletUtils {
             response.setCharacterEncoding("utf-8");
             response.getWriter().print(string);
         } catch (IOException e) {
-            e.printStackTrace();
+            log.error(e.getMessage(), e);
         }
         return null;
     }

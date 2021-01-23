@@ -2,6 +2,7 @@ package com.afeng.web.module.admin.controller;
 
 import com.afeng.web.module.admin.model.AjaxResult;
 import com.google.code.kaptcha.Producer;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,6 +24,7 @@ import java.io.IOException;
  *
  * @author ruoyi
  */
+@Slf4j
 @Controller
 @RequestMapping("/admin/captcha")
 public class CaptchaController extends BaseController {
@@ -65,14 +67,14 @@ public class CaptchaController extends BaseController {
             out.flush();
 
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error(e.getMessage(), e);
         } finally {
             try {
                 if (out != null) {
                     out.close();
                 }
             } catch (IOException e) {
-                e.printStackTrace();
+                log.error(e.getMessage(), e);
             }
         }
         return null;

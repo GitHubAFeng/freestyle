@@ -33,7 +33,7 @@ public class FileUploadUtils {
     /**
      * 默认上传的地址
      */
-    private static String defaultBaseDir = AFengConfig.getProfile();
+    private static String defaultBaseDir = AFengConfig.getUploadSavePath();
 
     private static int counter = 0;
 
@@ -129,7 +129,7 @@ public class FileUploadUtils {
     }
 
     private static final String getPathFileName(String uploadDir, String fileName) throws IOException {
-        int dirLastIndex = AFengConfig.getProfile().length() + 1;
+        int dirLastIndex = AFengConfig.getUploadSavePath().length() + 1;
         String currentDir = StringUtils.substring(uploadDir, dirLastIndex);
         String pathFileName = Constants.RESOURCE_PREFIX + "/" + currentDir + "/" + fileName;
         return pathFileName;

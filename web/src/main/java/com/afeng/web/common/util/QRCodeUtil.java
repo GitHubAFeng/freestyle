@@ -6,6 +6,7 @@ import com.google.zxing.Result;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.common.HybridBinarizer;
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
+import lombok.extern.slf4j.Slf4j;
 import sun.misc.BASE64Encoder;
 
 import javax.imageio.ImageIO;
@@ -16,7 +17,7 @@ import java.awt.image.BufferedImage;
 import java.io.*;
 import java.util.Hashtable;
 
-
+@Slf4j
 public class QRCodeUtil {
 
     private static final String CHARSET = "utf-8";
@@ -54,7 +55,7 @@ public class QRCodeUtil {
             png_base64 = png_base64.replaceAll("\n", "").replaceAll("\r", "");
             qr = "data:image/png;base64," + png_base64;
         } catch (IOException e) {
-            e.printStackTrace();
+            log.error(e.getMessage(), e);
         }
         return qr;
     }

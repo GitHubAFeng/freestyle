@@ -12,6 +12,7 @@ import com.afeng.web.module.common.constant.Constants;
 import com.afeng.web.module.common.utils.IpUtils;
 import com.afeng.web.module.common.utils.MessageUtils;
 import com.afeng.web.module.common.utils.StringUtils;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -30,6 +31,7 @@ import java.net.URLEncoder;
  *
  * @author ruoyi
  */
+@Slf4j
 @Controller
 @RequestMapping("/admin")
 public class LoginController extends BaseController {
@@ -67,7 +69,7 @@ public class LoginController extends BaseController {
             try {
                 username = URLDecoder.decode(username, "UTF-8");//进行解码
             } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
+                log.error(e.getMessage(), e);
             }
             String ip = IpUtils.getIpAddr(request);
             User user = loginService.login(username, password, ip);
@@ -101,7 +103,7 @@ public class LoginController extends BaseController {
             try {
                 username = URLEncoder.encode(username, "UTF-8"); //对输入的中文进行编码，防止乱码出现
             } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
+                log.error(e.getMessage(), e);
             }
             Cookie nameCookie = new Cookie("username", username);
             Cookie passwordCookie = new Cookie("password", password);
