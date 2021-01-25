@@ -5,6 +5,7 @@ import com.afeng.web.common.cache.JedisUtil;
 import com.afeng.web.common.log.ApiLogUtils;
 import com.afeng.web.common.mq.config.MqEventModel;
 import com.afeng.web.common.mq.config.MqEventType;
+import com.afeng.web.common.rpc.RpcUtils;
 import com.afeng.web.common.token.ApiSessionUtil;
 import com.afeng.web.common.token.JwtUtil;
 import com.afeng.web.common.util.QRCodeUtil;
@@ -412,16 +413,17 @@ public class ApiTestController extends BaseApiController {
      * @createDate 2020/12/30 16:18
      **/
     @GetMapping("/testRedissonRpc")
-    public ApiResult testRedissonRpc() {
-        //获取Redisson远程服务
-        RRemoteService remoteService = redissonClient.getRemoteService();
-        //应答回执超时1秒钟，远程执行超时30秒钟
-        RemoteInvocationOptions options = RemoteInvocationOptions.defaults();
-        //拿到生产端的接口
-        TestRPCService testRPCService = remoteService.get(TestRPCService.class, options);
-        //调用
-        String msg = testRPCService.testStr("哈喽");
-        return success(msg);
+    public ApiResult testRedissonRpc() throws Exception {
+//        //获取Redisson远程服务
+//        RRemoteService remoteService = redissonClient.getRemoteService();
+//        //应答回执超时1秒钟，远程执行超时30秒钟
+//        RemoteInvocationOptions options = RemoteInvocationOptions.defaults();
+//        //拿到生产端的接口
+//        TestRPCService testRPCService = remoteService.get(TestRPCService.class, options);
+//        //调用
+//        String msg = testRPCService.testStr("哈喽");
+//        return success(msg);
+        return success(RpcUtils.getInstance().invoke(TestRPCService.class, "testStr", "你好RPC"));
     }
 
 
@@ -429,14 +431,12 @@ public class ApiTestController extends BaseApiController {
     public ApiResult testRpc() {
         String text = getParameter("text");
         String methodName = getParameter("method");
-        String serviceName = "testRPC";
-        Object invoke = SpringUtils.invokeServiceMethod(serviceName, methodName, text,"te222");
-
+        String serviceName = "TestRPC";
+        Object invoke = null;
         try {
-            int aa = 1/0;
+            invoke = RpcUtils.getInstance().invoke(serviceName, methodName, text);
         } catch (Exception e) {
-            log.error(e.getMessage(),e);
-            LoggerFactory.getLogger("sys-user").error("线程池异步 记录日志失败", e);
+            e.printStackTrace();
         }
 
         return success(invoke);

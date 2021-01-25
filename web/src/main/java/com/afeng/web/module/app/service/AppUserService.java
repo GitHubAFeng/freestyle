@@ -4,15 +4,33 @@ import com.afeng.web.common.log.ApiLogUtils;
 import com.afeng.web.common.util.SpringUtils;
 import com.afeng.web.module.app.event.AppUserLoginEvent;
 import com.afeng.web.module.app.model.AppUser;
+import com.afeng.web.module.common.dao.CommonDao;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.EventListener;
 import org.springframework.core.annotation.Order;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @Slf4j
 @Service
 public class AppUserService {
+
+    @Autowired
+    private CommonDao commonDao;
+
+    public Map<String, Object> test() {
+        Map<String, Object> where = new HashMap<>();
+        where.put("oper_id", 1);
+        Map<String, Object> Param = new HashMap<>();
+        Param.put("oper_location", 1);
+        Param.put("title", "title as logTitle");
+        Param.put("dept_name", "isnull(dept_name,'测试') as deptName");
+        return commonDao.selectOneByParam("sys_oper_log", Param, where);
+    }
 
     //    @Transactional //使用数据库事务
     public void AppUserLogin(AppUser appUser) {

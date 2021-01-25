@@ -120,7 +120,7 @@ public final class SpringUtils implements BeanFactoryPostProcessor, ApplicationC
     /**
      * 反射调用服务
      */
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings("all")
     public static Object invokeServiceMethod(String serviceName, String methodName, Object... args) {
         try {
             serviceName = serviceName + "ServiceImpl";

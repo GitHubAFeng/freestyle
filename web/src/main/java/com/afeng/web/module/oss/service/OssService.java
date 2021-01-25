@@ -41,7 +41,6 @@ public class OssService {
     /**
      * 上传文件到OSS
      *
-     * @param configType OSS类型
      * @return URL路径
      * @author afeng
      * @date 2020/5/2 9:29
