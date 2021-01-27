@@ -124,6 +124,13 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-quartz</artifactId>
         </dependency>
+        <!-- elasticsearch操作库 -->
+        <!--https://mirrors.huaweicloud.com/elasticsearch/7.6.2/-->
+        <!--https://mirrors.huaweicloud.com/kibana/7.6.2/-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-elasticsearch</artifactId>
+        </dependency>
 
         <!-- 第三方类库 -->
 
