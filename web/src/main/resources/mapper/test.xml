@@ -39,4 +39,8 @@
 		if @rtn = 2627 or @rtn = 2601 raiserror('唯一键重复异常',16,1) else print @rtn
 	</select>
 
+	<select id="testDynamicData" parameterType="integer" resultType="integer">
+		select count(*) from app_user
+	</select>
+
 </mapper>

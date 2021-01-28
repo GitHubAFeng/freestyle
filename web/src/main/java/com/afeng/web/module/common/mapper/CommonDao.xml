@@ -200,11 +200,13 @@
         SELECT COUNT(*) FROM
         ${tableName}
         <where>
-            <foreach collection="whereParams.keys" item="key" separator="AND">
-                <if test="whereParams[key]!=null">
-                    ${key}=#{whereParams[${key}]}
-                </if>
-            </foreach>
+            <if test="whereParams!=null">
+                <foreach collection="whereParams.keys" item="key" separator="AND">
+                    <if test="whereParams[key]!=null">
+                        ${key}=#{whereParams[${key}]}
+                    </if>
+                </foreach>
+            </if>
         </where>
     </select>
 
@@ -212,44 +214,50 @@
         SELECT COUNT(*) FROM
         ${tableName} WITH(NOLOCK)
         <where>
-            <foreach collection="whereParams.keys" item="key" separator="AND">
-                <if test="whereParams[key]!=null">
-                    ${key}=#{whereParams[${key}]}
-                </if>
-            </foreach>
+            <if test="whereParams!=null">
+                <foreach collection="whereParams.keys" item="key" separator="AND">
+                    <if test="whereParams[key]!=null">
+                        ${key}=#{whereParams[${key}]}
+                    </if>
+                </foreach>
+            </if>
         </where>
     </select>
 
-    <select id="selectByPageMySql" parameterType="java.util.Map" resultType="java.util.Map" databaseId="mysql">
+    <select id="selectByPage" parameterType="java.util.Map" resultType="java.util.Map" databaseId="mysql">
         SELECT * FROM
         ${tableName}
         <where>
-            <foreach collection="whereParams.keys" item="key" separator="AND">
-                <if test="whereParams[key]!=null">
-                    ${key}=#{whereParams[${key}]}
-                </if>
-            </foreach>
+            <if test="whereParams!=null">
+                <foreach collection="whereParams.keys" item="key" separator="AND">
+                    <if test="whereParams[key]!=null">
+                        ${key}=#{whereParams[${key}]}
+                    </if>
+                </foreach>
+            </if>
         </where>
         <if test="order!=null and order!=''">
             order by #{order}
         </if>
         <if test="startNum!=null and endNum!=null">
-            limit ${startNum},${endNum}
+            limit (${pageNum}-1)*${pageSize},${pageNum}*${pageSize}
         </if>
     </select>
 
-    <select id="selectByPageMMSql" parameterType="java.util.Map" resultType="java.util.Map" databaseId="sqlserver">
+    <select id="selectByPage" parameterType="java.util.Map" resultType="java.util.Map" databaseId="sqlserver">
         SELECT * FROM(
         SELECT ROW_NUMBER() OVER(order by #{order}) as rowId,*
         ${tableName} WITH(NOLOCK)
         <where>
-            <foreach collection="whereParams.keys" item="key" separator="AND">
-                <if test="whereParams[key]!=null">
-                    ${key}=#{whereParams[${key}]}
-                </if>
-            </foreach>
+            <if test="whereParams!=null">
+                <foreach collection="whereParams.keys" item="key" separator="AND">
+                    <if test="whereParams[key]!=null">
+                        ${key}=#{whereParams[${key}]}
+                    </if>
+                </foreach>
+            </if>
         </where>
-        ) as p WHERE p.rowId between (${pageNum}-1)*20 and ${pageNum}*20
+        ) as p WHERE p.rowId between (${pageNum}-1)*${pageSize} and ${pageNum}*${pageSize}
     </select>
 
     <update id="updateAndAdd" parameterType="java.util.Map">
@@ -281,15 +289,17 @@
         </where>
     </update>
 
-    <select id="selectListByPageMySql" parameterType="java.util.Map" resultType="java.util.Map" databaseId="mysql">
+    <select id="selectListByPage" parameterType="java.util.Map" resultType="java.util.Map" databaseId="mysql">
         SELECT * FROM
         ${tableName}
         <where>
-            <foreach collection="whereParams.keys" item="key" separator="AND">
-                <if test="whereParams[key]!=null">
-                    ${key}=#{whereParams[${key}]}
-                </if>
-            </foreach>
+            <if test="whereParams!=null">
+                <foreach collection="whereParams.keys" item="key" separator="AND">
+                    <if test="whereParams[key]!=null">
+                        ${key}=#{whereParams[${key}]}
+                    </if>
+                </foreach>
+            </if>
         </where>
         <if test="order!=null and order!=''">
             order by #{order}
@@ -299,16 +309,18 @@
         </if>
     </select>
 
-    <select id="selectListByPageMMSql" parameterType="java.util.Map" resultType="java.util.Map" databaseId="sqlserver">
+    <select id="selectListByPage" parameterType="java.util.Map" resultType="java.util.Map" databaseId="sqlserver">
         SELECT * FROM(
         SELECT ROW_NUMBER() OVER(order by #{order}) as rowId,*
         ${tableName} WITH(NOLOCK)
         <where>
-            <foreach collection="whereParams.keys" item="key" separator="AND">
-                <if test="whereParams[key]!=null">
-                    ${key}=#{whereParams[${key}]}
-                </if>
-            </foreach>
+            <if test="whereParams!=null">
+                <foreach collection="whereParams.keys" item="key" separator="AND">
+                    <if test="whereParams[key]!=null">
+                        ${key}=#{whereParams[${key}]}
+                    </if>
+                </foreach>
+            </if>
         </where>
         ) as p WHERE p.rowId between (${pageNum}-1) * ${pageSize} and ${pageNum} * ${pageSize}
     </select>
@@ -317,11 +329,13 @@
         SELECT * FROM
         ${tableName}
         <where>
-            <foreach collection="params.keys" item="key" separator="and">
-                <if test="params[key]!=null">
-                    ${key}=#{params[${key}]}
-                </if>
-            </foreach>
+            <if test="params!=null">
+                <foreach collection="params.keys" item="key" separator="and">
+                    <if test="params[key]!=null">
+                        ${key}=#{params[${key}]}
+                    </if>
+                </foreach>
+            </if>
         </where>
         <if test="order!=null and order!=''">
             order by #{order}
@@ -332,11 +346,13 @@
         SELECT * FROM
         ${tableName} WITH(NOLOCK)
         <where>
-            <foreach collection="params.keys" item="key" separator="and">
-                <if test="params[key]!=null">
-                    ${key}=#{params[${key}]}
-                </if>
-            </foreach>
+            <if test="params!=null">
+                <foreach collection="params.keys" item="key" separator="and">
+                    <if test="params[key]!=null">
+                        ${key}=#{params[${key}]}
+                    </if>
+                </foreach>
+            </if>
         </where>
         <if test="order!=null and order!=''">
             order by #{order}
@@ -347,11 +363,13 @@
         SELECT 1 FROM
         ${tableName}
         <where>
-            <foreach collection="whereParams.keys" item="key" separator="and">
-                <if test="whereParams[key]!=null">
-                    ${key}=#{whereParams[${key}]}
-                </if>
-            </foreach>
+            <if test="whereParams!=null">
+                <foreach collection="whereParams.keys" item="key" separator="and">
+                    <if test="whereParams[key]!=null">
+                        ${key}=#{whereParams[${key}]}
+                    </if>
+                </foreach>
+            </if>
         </where>
     </select>
 
@@ -359,11 +377,13 @@
         SELECT 1 FROM
         ${tableName} WITH(NOLOCK)
         <where>
-            <foreach collection="whereParams.keys" item="key" separator="and">
-                <if test="whereParams[key]!=null">
-                    ${key}=#{whereParams[${key}]}
-                </if>
-            </foreach>
+            <if test="whereParams!=null">
+                <foreach collection="whereParams.keys" item="key" separator="and">
+                    <if test="whereParams[key]!=null">
+                        ${key}=#{whereParams[${key}]}
+                    </if>
+                </foreach>
+            </if>
         </where>
     </select>
 
@@ -382,11 +402,13 @@
         FROM
         ${tableName}
         <where>
-            <foreach collection="whereParams.keys" item="key" separator="AND">
-                <if test="whereParams[key]!=null">
-                    ${key}=#{whereParams[${key}]}
-                </if>
-            </foreach>
+            <if test="whereParams!=null">
+                <foreach collection="whereParams.keys" item="key" separator="AND">
+                    <if test="whereParams[key]!=null">
+                        ${key}=#{whereParams[${key}]}
+                    </if>
+                </foreach>
+            </if>
         </where>
     </select>
 
@@ -405,11 +427,13 @@
         FROM
         ${tableName} WITH(NOLOCK)
         <where>
-            <foreach collection="whereParams.keys" item="key" separator="AND">
-                <if test="whereParams[key]!=null">
-                    ${key}=#{whereParams[${key}]}
-                </if>
-            </foreach>
+            <if test="whereParams!=null">
+                <foreach collection="whereParams.keys" item="key" separator="AND">
+                    <if test="whereParams[key]!=null">
+                        ${key}=#{whereParams[${key}]}
+                    </if>
+                </foreach>
+            </if>
         </where>
     </select>
 
@@ -429,11 +453,13 @@
         FROM
         ${tableName}
         <where>
-            <foreach collection="whereParams.keys" item="key" separator="AND">
-                <if test="whereParams[key]!=null">
-                    ${key}=#{whereParams[${key}]}
-                </if>
-            </foreach>
+            <if test="whereParams!=null">
+                <foreach collection="whereParams.keys" item="key" separator="AND">
+                    <if test="whereParams[key]!=null">
+                        ${key}=#{whereParams[${key}]}
+                    </if>
+                </foreach>
+            </if>
         </where>
     </select>
 
@@ -452,11 +478,13 @@
         FROM
         ${tableName} WITH(NOLOCK)
         <where>
-            <foreach collection="whereParams.keys" item="key" separator="AND">
-                <if test="whereParams[key]!=null">
-                    ${key}=#{whereParams[${key}]}
-                </if>
-            </foreach>
+            <if test="whereParams!=null">
+                <foreach collection="whereParams.keys" item="key" separator="AND">
+                    <if test="whereParams[key]!=null">
+                        ${key}=#{whereParams[${key}]}
+                    </if>
+                </foreach>
+            </if>
         </where>
     </select>
 
@@ -475,11 +503,13 @@
         FROM
         ${tableName}
         <where>
-            <foreach collection="whereParams.keys" item="key" separator="AND">
-                <if test="whereParams[key]!=null">
-                    ${key}=#{whereParams[${key}]}
-                </if>
-            </foreach>
+            <if test="whereParams!=null">
+                <foreach collection="whereParams.keys" item="key" separator="AND">
+                    <if test="whereParams[key]!=null">
+                        ${key}=#{whereParams[${key}]}
+                    </if>
+                </foreach>
+            </if>
         </where>
         <if test="order!=null and order!=''">
             order by #{order}
@@ -502,11 +532,13 @@
         FROM
         ${tableName} WITH(NOLOCK)
         <where>
-            <foreach collection="whereParams.keys" item="key" separator="AND">
-                <if test="whereParams[key]!=null">
-                    ${key}=#{whereParams[${key}]}
-                </if>
-            </foreach>
+            <if test="whereParams!=null">
+                <foreach collection="whereParams.keys" item="key" separator="AND">
+                    <if test="whereParams[key]!=null">
+                        ${key}=#{whereParams[${key}]}
+                    </if>
+                </foreach>
+            </if>
         </where>
         <if test="order!=null and order!=''">
             order by #{order}

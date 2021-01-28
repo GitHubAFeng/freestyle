@@ -17,6 +17,7 @@ import com.afeng.web.framework.core.BaseApiController;
 import com.afeng.web.framework.core.constant.ApiResult;
 import com.afeng.web.module.app.model.AppUser;
 import com.afeng.web.module.app.service.AppUserService;
+import com.afeng.web.module.app.service.DynamicDataSourceService;
 import com.afeng.web.module.common.dao.BaseDao;
 import com.afeng.web.module.common.dao.CommonDao;
 import com.alibaba.fastjson.JSON;
@@ -440,6 +441,28 @@ public class ApiTestController extends BaseApiController {
         }
 
         return success(invoke);
+    }
+
+    @Autowired
+    private DynamicDataSourceService dynamicDataSourceService;
+
+    /**
+     * 测试多数据源
+     *
+     * @author AFeng
+     * @createDate 2021/1/28 16:50
+     **/
+    @GetMapping("testDynamicDataSource")
+    public String testDynamicDataSource() {
+        Integer freedom_userCount = dynamicDataSourceService.selectFreedomDataSource();
+        Integer afengboot_userCount = dynamicDataSourceService.selectAfengbootDataSource();
+        log.info("freedom中的用户表总量为{}", freedom_userCount);
+        log.info("afengboot中的评价表总量为{}", afengboot_userCount);
+        log.info("selectFreedomMapper中的用户表总量为{}", dynamicDataSourceService.selectFreedomMapper());
+        log.info("selectAfengbootMapper中的评价表总量为{}", dynamicDataSourceService.selectAfengbootMapper());
+        log.info("selectFreedomDao中的用户表总量为{}", dynamicDataSourceService.selectFreedomDao());
+        log.info("selectAfengbootDao中的评价表总量为{}", dynamicDataSourceService.selectAfengbootDao());
+        return "success";
     }
 
 }

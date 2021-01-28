@@ -87,7 +87,7 @@ public class AFengConfig {
         return uploadSavePath;
     }
 
-    public void setProfile(String profile) {
+    public void setUploadSavePath(String profile) {
         AFengConfig.uploadSavePath = profile;
     }
 

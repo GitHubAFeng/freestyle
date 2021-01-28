@@ -129,19 +129,14 @@ public interface CommonDao {
      * @param tableName   表名
      * @param whereParams 条件
      * @param order       排序：createTime desc
-     * @param startNum    开始行
-     * @param endNum      结束行
+     * @param pageNum     当前页码
+     * @param pageSize    每页数量
      **/
-    List<Map<String, Object>> selectByPageMySql(@Param("tableName") String tableName,
-                                                @Param("whereParams") Map<String, Object> whereParams,
-                                                @Param("order") String order,
-                                                @Param("startNum") Integer startNum,
-                                                @Param("endNum") Integer endNum);
-
-    List<Map<String, Object>> selectByPageMMSql(@Param("tableName") String tableName,
-                                                @Param("whereParams") Map<String, Object> whereParams,
-                                                @Param("order") String order,
-                                                @Param("pageNum") Integer pageNum);
+    List<Map<String, Object>> selectByPage(@Param("tableName") String tableName,
+                                           @Param("whereParams") Map<String, Object> whereParams,
+                                           @Param("order") String order,
+                                           @Param("pageNum") Integer pageNum,
+                                           @Param("pageSize") Integer pageSize);
 
     /**
      * 简单流式分页
@@ -152,18 +147,12 @@ public interface CommonDao {
      * @param pageSize    每页条数
      * @param pageNum     当前页
      **/
-    List<Map<String, Object>> selectListByPageMySql(@Param("tableName") String tableName,
-                                                    @Param("whereParams") Map<String, Object> whereParams,
-                                                    @Param("order") String order,
-                                                    @Param("pageSize") Integer pageSize,
-                                                    @Param("pageNum") Integer pageNum);
+    List<Map<String, Object>> selectListByPage(@Param("tableName") String tableName,
+                                               @Param("whereParams") Map<String, Object> whereParams,
+                                               @Param("order") String order,
+                                               @Param("pageSize") Integer pageSize,
+                                               @Param("pageNum") Integer pageNum);
 
-
-    List<Map<String, Object>> selectListByPageMMSql(@Param("tableName") String tableName,
-                                                    @Param("whereParams") Map<String, Object> whereParams,
-                                                    @Param("order") String order,
-                                                    @Param("pageSize") Integer pageSize,
-                                                    @Param("pageNum") Integer pageNum);
 
     /**
      * 判断是否存在

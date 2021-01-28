@@ -1,14 +1,29 @@
 spring:
   # 配置数据源
   datasource:
-    # 使用mysql数据库
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://127.0.0.1:3306/free?characterEncoding=UTF-8&allowMultiQueries=true&autoReconnect=true&pinGlobalTxToPhysicalConnection=true&useSSL=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
-    username: root
-    password: root
-
+    # 使用druid连接池
+    type: com.alibaba.druid.pool.DruidDataSource
+    driverClassName: com.mysql.cj.jdbc.Driver
     # druid连接池配置
     druid:
+      # 注意数据源名称不可包含下划线 _ 否则启动会出错
+      master: # 主数据源
+        url: jdbc:mysql://127.0.0.1:3306/free?characterEncoding=UTF-8&allowMultiQueries=true&autoReconnect=true&pinGlobalTxToPhysicalConnection=true&useSSL=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
+        username: root
+        password: root
+      freedom: # 从数据源1
+        # 从数据源开关/默认关闭  true|false
+        enabled: false
+        url: jdbc:mysql://127.0.0.1:3306/freedom?characterEncoding=UTF-8&allowMultiQueries=true&autoReconnect=true&pinGlobalTxToPhysicalConnection=true&useSSL=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
+        username: root
+        password: root
+      afengboot: # 从数据源2
+        # 从数据源开关/默认关闭  true|false
+        enabled: false
+        url: jdbc:mysql://127.0.0.1:3306/afengboot?characterEncoding=UTF-8&allowMultiQueries=true&autoReconnect=true&pinGlobalTxToPhysicalConnection=true&useSSL=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
+        username: root
+        password: root
+
       # 初始连接数
       initialSize: 5
       # 最小连接池数量
@@ -28,4 +43,27 @@ spring:
       testWhileIdle: true
       testOnBorrow: false
       testOnReturn: false
-
+      webStatFilter:
+          enabled: true
+      statViewServlet:
+          enabled: true
+          # 设置白名单，不填则允许所有访问
+          allow:
+          # 监控页面URL
+          url-pattern: /admin/druid/*
+          # 控制台管理用户名和密码
+          login-username:
+          login-password:
+      filter:
+          stat:
+              enabled: true
+              # 慢SQL记录
+              log-slow-sql: true
+              # slowSqlMillis的缺省值为3000，也就是3秒
+              slow-sql-millis: 1000
+              # SQL合并配置
+              merge-sql: true
+          wall:
+              config:
+                  # 允许执行多条SQL
+                  multi-statement-allow: true
