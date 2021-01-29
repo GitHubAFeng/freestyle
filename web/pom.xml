@@ -150,14 +150,15 @@
                 </configuration>
             </plugin>
         </plugins>
-        <!--本处需要，resources和java两个路径都指定-->
+        <!-- 重新指明资源文件位置 -->
+        <!--https://www.jianshu.com/p/3d1075de3015-->
+        <!--https://www.hangge.com/blog/cache/detail_2887.html-->
         <resources>
+            <!-- 打包src/main/resources路径下所有文件 -->
             <resource>
                 <directory>src/main/resources</directory>
-                <!--识别@标识符-->
-                <filtering>true</filtering>
             </resource>
-            <!-- 打包时，将src/main/java路径下的mybatis执行sql的xml文件打入 -->
+            <!-- 打包src/main/java路径下的xml文件 -->
             <resource>
                 <directory>src/main/java</directory>
                 <includes>
@@ -166,12 +167,13 @@
             </resource>
             <!--按配置选择打包-->
             <resource>
+                <!--替换src/main/resources路径下yml与properties文件中@xx@表示的maven properties属性值-->
                 <directory>src/main/resources</directory>
+                <!--识别@标识符-->
                 <filtering>true</filtering>
                 <includes>
-                    <include>application.yml</include>
-                    <include>application-${package.environment}.yml</include>
-                    <include>**/*.xml</include>
+                    <include>**/*.yml</include>
+                    <include>**/*.properties</include>
                 </includes>
             </resource>
         </resources>
