@@ -8,10 +8,7 @@ import com.afeng.web.common.mq.config.MqEventType;
 import com.afeng.web.common.rpc.RpcUtils;
 import com.afeng.web.common.token.ApiSessionUtil;
 import com.afeng.web.common.token.JwtUtil;
-import com.afeng.web.common.util.QRCodeUtil;
-import com.afeng.web.common.util.RedisMQUtil;
-import com.afeng.web.common.util.SignUtil;
-import com.afeng.web.common.util.SpringUtils;
+import com.afeng.web.common.util.*;
 import com.afeng.web.framework.annotation.ApiAuth;
 import com.afeng.web.framework.core.BaseApiController;
 import com.afeng.web.framework.core.constant.ApiResult;
@@ -22,6 +19,7 @@ import com.afeng.web.module.common.dao.BaseDao;
 import com.afeng.web.module.common.dao.CommonDao;
 import com.alibaba.fastjson.JSON;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.RandomUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.redisson.api.RLock;
@@ -463,6 +461,14 @@ public class ApiTestController extends BaseApiController {
         log.info("selectFreedomDao中的用户表总量为{}", dynamicDataSourceService.selectFreedomDao());
         log.info("selectAfengbootDao中的评价表总量为{}", dynamicDataSourceService.selectAfengbootDao());
         return "success";
+    }
+
+
+    @GetMapping("/testGenerateID")
+    public ApiResult testGenerateID() {
+        int first = RandomUtils.nextInt(1, 9);
+        System.out.println(first);
+        return success(GenerateIDUtil.getInstance().getPrimaryId());
     }
 
 }

@@ -44,6 +44,10 @@ public class JedisUtil {
         return "afeng:" + key;
     }
 
+    public Jedis getJedis() {
+        return jedisPool.getResource();
+    }
+
     // String 操作
 
     /**
