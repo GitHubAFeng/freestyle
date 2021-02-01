@@ -370,6 +370,26 @@
             <scope>provided</scope>
         </dependency>
 
+        <!--SMS短信服务-->
+        <dependency>
+            <groupId>com.aliyun</groupId>
+            <artifactId>aliyun-java-sdk-core</artifactId>
+            <version>4.1.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.aliyun</groupId>
+            <artifactId>aliyun-java-sdk-dysmsapi</artifactId>
+            <version>2.1.0</version>
+        </dependency>
+
+        <!--个推推送-->
+        <!--https://mvnrepository.com/artifact/com.getui.push/restful-sdk-->
+        <!--https://github.com/GetuiLaboratory/getui-pushapi-java-client-v2-->
+        <dependency>
+            <groupId>com.getui.push</groupId>
+            <artifactId>restful-sdk</artifactId>
+            <version>1.0.0.1</version>
+        </dependency>
 
     </dependencies>
 

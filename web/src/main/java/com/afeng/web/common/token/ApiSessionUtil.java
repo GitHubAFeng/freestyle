@@ -14,7 +14,7 @@ import java.util.UUID;
  */
 public class ApiSessionUtil {
 
-    private static final String session_PrefixKey = "session_";//缓存KEY前缀
+    private static final String session_PrefixKey = "session:";//缓存KEY前缀
     public static final int session_EXPIRE_TIME = 60 * 60;//session过期时间，单位秒
 
 

@@ -83,7 +83,7 @@ public class RpcUtils {
         return method.invoke(service, args);
     }
 
-	//TODO 测试发现通过反射调用会导致bean没法自动注入，不过手动获取bean
+	//TODO 测试发现通过反射调用会导致bean没法自动注入，不过可以手动获取bean
     public Object invoke(final String serviceName, final String methodName, final Object... args) throws Exception {
         //定义重试机制
         Retryer<Object> retryer = RetryerBuilder.newBuilder()
