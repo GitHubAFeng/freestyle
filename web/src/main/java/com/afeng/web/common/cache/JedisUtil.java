@@ -48,6 +48,10 @@ public class JedisUtil {
         return jedisPool.getResource();
     }
 
+    public JedisPool getJedisPool() {
+        return jedisPool;
+    }
+
     // String 操作
 
     /**

@@ -391,6 +391,32 @@
             <version>1.0.0.1</version>
         </dependency>
 
+        <!--WxJava SDK系统DEMO https://github.com/Wechat-Group/WxJava/blob/develop/demo.md-->
+        <!--微信公众号（包括订阅号和服务号）开发工具 https://github.com/Wechat-Group/WxJava/wiki/%E5%85%AC%E4%BC%97%E5%8F%B7%E5%BC%80%E5%8F%91%E6%96%87%E6%A1%A3 -->
+        <dependency>
+            <groupId>com.github.binarywang</groupId>
+            <artifactId>weixin-java-mp</artifactId>
+            <version>4.0.0</version>
+        </dependency>
+        <!--微信小程序 开发工具 https://github.com/binarywang/weixin-java-miniapp-demo -->
+        <dependency>
+            <groupId>com.github.binarywang</groupId>
+            <artifactId>weixin-java-miniapp</artifactId>
+            <version>4.0.0</version>
+        </dependency>
+        <!--微信支付 https://github.com/Wechat-Group/WxJava/wiki/%E5%BE%AE%E4%BF%A1%E6%94%AF%E4%BB%98 -->
+        <dependency>
+            <groupId>com.github.binarywang</groupId>
+            <artifactId>weixin-java-pay</artifactId>
+            <version>4.0.0</version>
+        </dependency>
+        <!--Emoji 表情转换工具 https://github.com/binarywang/java-emoji-converter -->
+        <dependency>
+            <groupId>com.github.binarywang</groupId>
+            <artifactId>java-emoji-converter</artifactId>
+            <version>1.0.1</version>
+        </dependency>
+
     </dependencies>
 
 
