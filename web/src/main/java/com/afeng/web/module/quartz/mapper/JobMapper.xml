@@ -28,6 +28,7 @@
     <select id="selectJobList" parameterType="Job" resultMap="JobResult">
         <include refid="selectJobVo"/>
         <where>
+            1=1
             <if test="jobName != null and jobName != ''">
                 AND job_name like concat('%', #{jobName}, '%')
             </if>
@@ -45,6 +46,7 @@
 
     <select id="selectJobAll" resultMap="JobResult">
         <include refid="selectJobVo"/>
+        where 1=1
     </select>
 
     <select id="selectJobById" parameterType="Long" resultMap="JobResult">

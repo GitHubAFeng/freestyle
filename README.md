@@ -12,6 +12,7 @@ free 是一套全部开源的快速开发平台，毫无保留给个人及企业
 ### <a href="https://www.yuque.com/afeng-njhoy/azz7nx/vf1yxg" target="_blank">使用文档(持续更新中)</a>
 
 
+* <a href="https://www.yuque.com/afeng-njhoy/azz7nx/vf1yxg" target="_blank">文档：https://www.yuque.com/afeng-njhoy/azz7nx/vf1yxg</a> 
 * 感谢 <a href="https://gitee.com/y_project/RuoYi" target="_blank">RuoYi</a> free项目参考了若依管理后台。
 * 感谢 <a href="https://gitee.com/bootstrap2table/boot_master" target="_blank">boot_master</a> free项目参考了此开源项目的部分权限设计。
 
@@ -45,9 +46,10 @@ free
 
 ## 快速开始
 1.  打开doc目录，free目前支持mysql与sqlServer数据库，新建一个名为free的数据库并录入表结构数据。
-2.  修改application-dev.yml配置文件中的spring.profiles.include选项，根据需要选择mysql或sqlServer配置，并修改相应数据库配置中的连接信息。
-3.  修改application-dev.yml配置文件中的spring.redis的连接信息并先运行redis服务。
-4.  至此，启动项目即可。
+2.  使用IDEA打开项目，确认Maven的Profiles选中"jar(运行开发环境)"，并确定导入依赖配置。
+3.  修改application-dev.yml配置文件中的spring.profiles.include选项，根据需要选择mysql或sqlServer配置，并修改相应数据库配置中的连接信息。
+4.  修改application-dev.yml配置文件中的spring.redis的连接信息并先运行redis服务。
+5.  至此，启动项目即可。
 
 
 ## 项目交流群

@@ -89,6 +89,8 @@
             <appender-ref ref="file_warn"/>
             <appender-ref ref="file_error"/>
         </root>
+        <!--单独控制此包名下的输出级别-->
+        <logger name="com.afeng" level="DEBUG"/>
     </springProfile>
 
     <!-- 生产环境 -->

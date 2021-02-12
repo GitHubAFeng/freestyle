@@ -48,6 +48,7 @@
     <select id="selectUserOnlineList" parameterType="UserOnline" resultMap="UserOnlineResult">
         <include refid="selectOnlineVo"/>
         <where>
+            1=1
             <if test="ipaddr != null and ipaddr != ''">
                 AND ipaddr like concat('%', #{ipaddr}, '%')
             </if>

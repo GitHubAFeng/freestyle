@@ -38,8 +38,7 @@ public class DictUtils {
         Map<String, Object> data = cacheUtil.getObjectMap(getCacheName());
         Object cacheObj = MapUtils.getObject(data, getCacheKey(key));
         if (StringUtils.isNotNull(cacheObj)) {
-            List<DictData> DictDatas = StringUtils.cast(cacheObj);
-            return DictDatas;
+            return StringUtils.cast(cacheObj);
         }
         return null;
     }

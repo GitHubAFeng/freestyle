@@ -23,6 +23,7 @@
     <select id="selectDictTypeList" parameterType="DictType" resultMap="DictTypeResult">
         <include refid="selectDictTypeVo"/>
         <where>
+            1=1
             <if test="dictName != null and dictName != ''">
                 AND dict_name like concat('%', #{dictName}, '%')
             </if>
@@ -43,6 +44,7 @@
 
     <select id="selectDictTypeAll" resultMap="DictTypeResult">
         <include refid="selectDictTypeVo"/>
+        where 1=1
     </select>
 
     <select id="selectDictTypeById" parameterType="Long" resultMap="DictTypeResult">

@@ -69,6 +69,7 @@
 
     <select id="selectMenuAll" resultMap="MenuResult">
         <include refid="selectMenuVo"/>
+        where 1=1
         order by parent_id, order_num
     </select>
 
@@ -120,6 +121,7 @@
     <select id="selectMenuList" parameterType="Menu" resultMap="MenuResult">
         <include refid="selectMenuVo"/>
         <where>
+            1=1
             <if test="menuName != null and menuName != ''">
                 AND menu_name like concat('%', #{menuName}, '%')
             </if>

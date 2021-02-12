@@ -29,6 +29,7 @@
     <select id="selectLogininforList" parameterType="Logininfor" resultMap="LogininforResult">
         select info_id,login_name,ipaddr,login_location,browser,os,status,msg,login_time from sys_logininfor
         <where>
+            1=1
             <if test="ipaddr != null and ipaddr != ''">
                 AND ipaddr like concat('%', #{ipaddr}, '%')
             </if>

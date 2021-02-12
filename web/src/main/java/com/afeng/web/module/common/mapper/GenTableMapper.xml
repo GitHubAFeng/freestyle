@@ -56,6 +56,7 @@
     <select id="selectGenTableList" parameterType="GenTable" resultMap="GenTableResult">
         <include refid="selectGenTableVo"/>
         <where>
+            1=1
             <if test="tableName != null and tableName != ''">
                 AND lower(table_name) like lower(concat('%', #{tableName}, '%'))
             </if>

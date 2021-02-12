@@ -26,4 +26,17 @@ public class MyBatisConfig {
         return databaseIdProvider;
     }
 
+    /**
+     * 注册拦截器
+     */
+    @Bean
+    public MyBatisInterceptor mybatisInterceptor() {
+        MyBatisInterceptor interceptor = new MyBatisInterceptor();
+        Properties properties = new Properties();
+        // 可以调用properties.setProperty方法来给拦截器设置一些自定义参数
+        interceptor.setProperties(properties);
+        return interceptor;
+    }
+
+
 }

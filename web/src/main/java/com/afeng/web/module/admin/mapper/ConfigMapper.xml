@@ -41,6 +41,7 @@
     <select id="selectConfigList" parameterType="Config" resultMap="ConfigResult">
         <include refid="selectConfigVo"/>
         <where>
+            1=1
             <if test="configName != null and configName != ''">
                 AND config_name like concat('%', #{configName}, '%')
             </if>

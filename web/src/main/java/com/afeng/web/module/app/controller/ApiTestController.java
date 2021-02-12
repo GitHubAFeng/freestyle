@@ -18,6 +18,7 @@ import com.afeng.web.module.app.service.DynamicDataSourceService;
 import com.afeng.web.module.common.dao.BaseDao;
 import com.afeng.web.module.common.dao.CommonDao;
 import com.alibaba.fastjson.JSON;
+import com.google.common.collect.Maps;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.RandomUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -31,6 +32,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.task.TaskExecutor;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.support.TransactionCallback;
+import org.springframework.transaction.support.TransactionCallbackWithoutResult;
+import org.springframework.transaction.support.TransactionTemplate;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -78,6 +83,9 @@ public class ApiTestController extends BaseApiController {
     private SqlSessionTemplate sqlSessionTemplate;
     @Autowired
     private BaseDao baseDao;
+    @Autowired
+    private TransactionTemplate transactionTemplate;
+
 
     //测试redis消息队列操作
     @ApiAuth(isAuthSign = false)
@@ -464,11 +472,114 @@ public class ApiTestController extends BaseApiController {
     }
 
 
+    /**
+     * 测试生成唯一码
+     *
+     * @author afeng
+     * @date 2021/2/12 13:30
+     */
     @GetMapping("/testGenerateID")
     public ApiResult testGenerateID() {
         int first = RandomUtils.nextInt(1, 9);
         System.out.println(first);
         return success(GenerateIDUtil.getInstance().getPrimaryId());
+    }
+
+
+    /**
+     * 测试自定义事务控制
+     *
+     * @author afeng
+     * @date 2021/2/12 13:31
+     */
+    @GetMapping("/testTransactionTemplate")
+    public ApiResult testTransactionTemplate() {
+//        Boolean isSuccess = transactionTemplate.execute(new TransactionCallback<Boolean>() {
+//            @Override
+//            public Boolean doInTransaction(TransactionStatus action) {
+//                try {
+//                    Map<String, Object> where = Maps.newHashMap();
+//                    where.put("id", "2");
+//                    Map<String, Object> params = Maps.newHashMap();
+//                    params.put("mpopenid", "123");
+//                    int result = commonDao.update("app_user", params, where);
+//                    commonDao.insert("app_user", params);
+//                    if (result > 0) {
+//                        action.setRollbackOnly();
+//                        return false;
+//                    } else {
+//                        return true;
+//                    }
+//                } catch (Exception e) {
+//                    action.setRollbackOnly();
+//                }
+//                return false;
+//            }
+//        });
+        Boolean isSuccess = transactionTemplate.execute(action -> {
+            try {
+                Map<String, Object> where = Maps.newHashMap();
+                where.put("id", "2");
+                Map<String, Object> params = Maps.newHashMap();
+                params.put("mpopenid", "123");
+                int result = commonDao.update("app_user", params, where);
+                commonDao.insert("app_user", params);
+                if (result > 0) {
+                    //回滚
+                    action.setRollbackOnly();
+                    return false;
+                } else {
+                    return true;
+                }
+            } catch (Exception e) {
+                //回滚
+                action.setRollbackOnly();
+            }
+            return false;
+        });
+        return success(isSuccess);
+    }
+
+    @GetMapping("/testTransactionTemplate2")
+    public ApiResult testTransactionTemplate2() {
+        transactionTemplate.execute(new TransactionCallbackWithoutResult() {
+
+            @Override
+            protected void doInTransactionWithoutResult(TransactionStatus transactionStatus) {
+                try {
+                    Map<String, Object> where = Maps.newHashMap();
+                    where.put("id", "2");
+                    Map<String, Object> params = Maps.newHashMap();
+                    params.put("mpopenid", "1234");
+                    commonDao.insert("app_user", params);
+                    int result = commonDao.update("app_user", params, where);
+                    if (result > 0) {
+                        //回滚
+                        transactionStatus.setRollbackOnly();
+                    }
+                } catch (Exception e) {
+                    //回滚
+                    transactionStatus.setRollbackOnly();
+                }
+            }
+        });
+        return success();
+    }
+
+
+    /**
+     * 测试MyBatis拦截器
+     *
+     * @author afeng
+     * @date 2021/2/12 14:33
+     */
+    @GetMapping("/testMyBatisInterceptor")
+    public ApiResult testMyBatisInterceptor() {
+        Map<String, Object> where = Maps.newHashMap();
+        Map<String, Object> params = Maps.newHashMap();
+        params.put("unionid", "1234");
+        commonDao.update("app_user", params, where);
+        return success();
     }
 
 }

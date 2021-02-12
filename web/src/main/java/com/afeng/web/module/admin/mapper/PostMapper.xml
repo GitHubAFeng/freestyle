@@ -25,6 +25,7 @@
     <select id="selectPostList" parameterType="Post" resultMap="PostResult">
         <include refid="selectPostVo"/>
         <where>
+            1=1
             <if test="postCode != null and postCode != ''">
                 AND post_code like concat('%', #{postCode}, '%')
             </if>
@@ -39,6 +40,7 @@
 
     <select id="selectPostAll" resultMap="PostResult">
         <include refid="selectPostVo"/>
+        where 1=1
     </select>
 
     <select id="selectPostsByUserId" parameterType="Long" resultMap="PostResult">
