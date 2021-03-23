@@ -8,6 +8,7 @@ free 是一套全部开源的快速开发平台，毫无保留给个人及企业
 
 下一步的计划，把free打造成一款能够平滑无痛地向微服务演化的单应用框架。
 
+### <a href="https://gitee.com/GeekAFeng/simpleFree" target="_blank">此项目会不断尝试新的、好用的、方便的技术栈，如果你只想要一个简单好用的开发手脚架，请尝试 simpleFree </a>
 
 ### <a href="https://www.yuque.com/afeng-njhoy/azz7nx/vf1yxg" target="_blank">使用文档(持续更新中)</a>
 
