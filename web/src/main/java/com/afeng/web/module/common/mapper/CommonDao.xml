@@ -10,7 +10,7 @@
         <where>
             <foreach collection="params.keys" item="key" separator="AND">
                 <if test="params[key]!=null">
-                    ${key}=#{params[${key}]}
+                    `${key}`=#{params[${key}]}
                 </if>
             </foreach>
         </where>
@@ -22,7 +22,7 @@
         <where>
             <foreach collection="params.keys" item="key" separator="AND">
                 <if test="params[key]!=null">
-                    ${key}=#{params[${key}]}
+                    [${key}]=#{params[${key}]}
                 </if>
             </foreach>
         </where>
@@ -34,7 +34,7 @@
         <where>
             <foreach collection="params.keys" item="key" separator="AND">
                 <if test="params[key]!=null">
-                    ${key}=#{params[${key}]}
+                    `${key}`=#{params[${key}]}
                 </if>
             </foreach>
         </where>
@@ -46,17 +46,32 @@
         <where>
             <foreach collection="params.keys" item="key" separator="AND">
                 <if test="params[key]!=null">
-                    ${key}=#{params[${key}]}
+                    [${key}]=#{params[${key}]}
                 </if>
             </foreach>
         </where>
     </select>
 
-    <insert id="insert" parameterType="java.util.Map">
+    <insert id="insert" parameterType="java.util.Map" databaseId="mysql">
         INSERT INTO ${tableName}
         <foreach collection="params.keys" item="key" open="(" close=")" separator=",">
             <if test="key != 'id'">
-                ${key}
+                `${key}`
+            </if>
+        </foreach>
+        VALUES
+        <foreach collection="params.keys" item="key" open="(" close=")" separator=",">
+            <if test="key != 'id'">
+                #{params[${key}]}
+            </if>
+        </foreach>
+    </insert>
+
+    <insert id="insert" parameterType="java.util.Map" databaseId="sqlserver">
+        INSERT INTO ${tableName}
+        <foreach collection="params.keys" item="key" open="(" close=")" separator=",">
+            <if test="key != 'id'">
+                [${key}]
             </if>
         </foreach>
         VALUES
@@ -71,7 +86,7 @@
         INSERT IGNORE INTO ${tableName}
         <foreach collection="params.keys" item="key" open="(" close=")" separator=",">
             <if test="key != 'id'">
-                ${key}
+                `${key}`
             </if>
         </foreach>
         VALUES
@@ -87,7 +102,7 @@
         INSERT INTO ${tableName}
         <foreach collection="params.keys" item="key" open="(" close=")" separator=",">
             <if test="key != 'id'">
-                ${key}
+                [${key}]
             </if>
         </foreach>
         VALUES
@@ -103,11 +118,12 @@
         end catch
     </insert>
 
-    <insert id="insertRetId" parameterType="java.util.Map" useGeneratedKeys="true" keyProperty="params.id">
+    <insert id="insertRetId" parameterType="java.util.Map" useGeneratedKeys="true" keyProperty="params.id"
+            databaseId="sqlserver">
         INSERT INTO ${tableName}
         <foreach collection="params.keys" item="key" open="(" close=")" separator=",">
             <if test="key != 'id'">
-                ${key}
+                [${key}]
             </if>
         </foreach>
         VALUES
@@ -118,12 +134,28 @@
         </foreach>
     </insert>
 
-    <update id="update" parameterType="java.util.Map">
+    <insert id="insertRetId" parameterType="java.util.Map" useGeneratedKeys="true" keyProperty="params.id"
+            databaseId="mysql">
+        INSERT INTO ${tableName}
+        <foreach collection="params.keys" item="key" open="(" close=")" separator=",">
+            <if test="key != 'id'">
+                `${key}`
+            </if>
+        </foreach>
+        VALUES
+        <foreach collection="params.keys" item="key" open="(" close=")" separator=",">
+            <if test="key != 'id'">
+                #{params[${key}]}
+            </if>
+        </foreach>
+    </insert>
+
+    <update id="update" parameterType="java.util.Map" databaseId="sqlserver">
         UPDATE ${tableName}
         <set>
             <foreach collection="params.keys" item="key" separator=",">
                 <if test="params[key] != null">
-                    ${key}=#{params[${key}]}
+                    [${key}]=#{params[${key}]}
                 </if>
             </foreach>
         </set>
@@ -134,14 +166,37 @@
             <if test="whereParams!=null">
                 <foreach collection="whereParams.keys" item="key" separator="AND">
                     <if test="whereParams[key] != null">
-                        ${key}=#{whereParams[${key}]}
+                        [${key}]=#{whereParams[${key}]}
                     </if>
                 </foreach>
             </if>
         </where>
     </update>
 
-    <delete id="delete" parameterType="java.util.Map">
+    <update id="update" parameterType="java.util.Map" databaseId="mysql">
+        UPDATE ${tableName}
+        <set>
+            <foreach collection="params.keys" item="key" separator=",">
+                <if test="params[key] != null">
+                    `${key}`=#{params[${key}]}
+                </if>
+            </foreach>
+        </set>
+        <where>
+            <if test="whereParams==null">
+                1=2
+            </if>
+            <if test="whereParams!=null">
+                <foreach collection="whereParams.keys" item="key" separator="AND">
+                    <if test="whereParams[key] != null">
+                        `${key}`=#{whereParams[${key}]}
+                    </if>
+                </foreach>
+            </if>
+        </where>
+    </update>
+
+    <delete id="delete" parameterType="java.util.Map" databaseId="sqlserver">
         DELETE FROM ${tableName}
         <where>
             <if test="whereParams==null">
@@ -150,19 +205,35 @@
             <if test="whereParams!=null">
                 <foreach collection="whereParams.keys" item="key" separator="AND">
                     <if test="whereParams[key] != null">
-                        ${key}=#{whereParams[${key}]}
+                        [${key}]=#{whereParams[${key}]}
                     </if>
                 </foreach>
             </if>
         </where>
     </delete>
 
-    <update id="updateAdd" parameterType="java.util.Map">
+    <delete id="delete" parameterType="java.util.Map" databaseId="mysql">
+        DELETE FROM ${tableName}
+        <where>
+            <if test="whereParams==null">
+                1=2
+            </if>
+            <if test="whereParams!=null">
+                <foreach collection="whereParams.keys" item="key" separator="AND">
+                    <if test="whereParams[key] != null">
+                        `${key}`=#{whereParams[${key}]}
+                    </if>
+                </foreach>
+            </if>
+        </where>
+    </delete>
+
+    <update id="updateAdd" parameterType="java.util.Map" databaseId="sqlserver">
         UPDATE ${tableName}
         <set>
             <foreach collection="params.keys" item="key" separator=",">
                 <if test="params[key] != null">
-                    ${key} = ISNULL(${key},0) + #{params[${key}]}
+                    [${key}] = ISNULL([${key}],0) + #{params[${key}]}
                 </if>
             </foreach>
         </set>
@@ -173,7 +244,30 @@
             <if test="whereParams!=null">
                 <foreach collection="whereParams.keys" item="key" separator="AND">
                     <if test="whereParams[key] != null">
-                        ${key}=#{whereParams[${key}]}
+                        [${key}]=#{whereParams[${key}]}
+                    </if>
+                </foreach>
+            </if>
+        </where>
+    </update>
+
+    <update id="updateAdd" parameterType="java.util.Map" databaseId="mysql">
+        UPDATE ${tableName}
+        <set>
+            <foreach collection="params.keys" item="key" separator=",">
+                <if test="params[key] != null">
+                    `${key}` = IFNULL(`${key}`,0) + #{params[${key}]}
+                </if>
+            </foreach>
+        </set>
+        <where>
+            <if test="whereParams==null">
+                1=2
+            </if>
+            <if test="whereParams!=null">
+                <foreach collection="whereParams.keys" item="key" separator="AND">
+                    <if test="whereParams[key] != null">
+                        `${key}`=#{whereParams[${key}]}
                     </if>
                 </foreach>
             </if>
@@ -203,7 +297,7 @@
             <if test="whereParams!=null">
                 <foreach collection="whereParams.keys" item="key" separator="AND">
                     <if test="whereParams[key]!=null">
-                        ${key}=#{whereParams[${key}]}
+                        `${key}`=#{whereParams[${key}]}
                     </if>
                 </foreach>
             </if>
@@ -217,7 +311,7 @@
             <if test="whereParams!=null">
                 <foreach collection="whereParams.keys" item="key" separator="AND">
                     <if test="whereParams[key]!=null">
-                        ${key}=#{whereParams[${key}]}
+                        [${key}]=#{whereParams[${key}]}
                     </if>
                 </foreach>
             </if>
@@ -231,7 +325,7 @@
             <if test="whereParams!=null">
                 <foreach collection="whereParams.keys" item="key" separator="AND">
                     <if test="whereParams[key]!=null">
-                        ${key}=#{whereParams[${key}]}
+                        `${key}`=#{whereParams[${key}]}
                     </if>
                 </foreach>
             </if>
@@ -252,7 +346,7 @@
             <if test="whereParams!=null">
                 <foreach collection="whereParams.keys" item="key" separator="AND">
                     <if test="whereParams[key]!=null">
-                        ${key}=#{whereParams[${key}]}
+                        [${key}]=#{whereParams[${key}]}
                     </if>
                 </foreach>
             </if>
@@ -260,18 +354,18 @@
         ) as p WHERE p.rowId between (${pageNum}-1)*${pageSize} and ${pageNum}*${pageSize}
     </select>
 
-    <update id="updateAndAdd" parameterType="java.util.Map">
+    <update id="updateAndAdd" parameterType="java.util.Map" databaseId="sqlserver">
         UPDATE ${tableName}
         <set>
             <foreach collection="addParams.keys" item="key" separator=",">
                 <if test="addParams[key] != null">
-                    ${key} = ISNULL(${key},0) + #{addParams[${key}]}
+                    [${key}] = ISNULL([${key}],0) + #{addParams[${key}]}
                 </if>
             </foreach>
             ,
             <foreach collection="params.keys" item="key" separator=",">
                 <if test="params[key] != null">
-                    ${key} = #{params[${key}]}
+                    [${key}] = #{params[${key}]}
                 </if>
             </foreach>
         </set>
@@ -282,7 +376,36 @@
             <if test="whereParams!=null">
                 <foreach collection="whereParams.keys" item="key" separator="AND">
                     <if test="whereParams[key] != null">
-                        ${key}=#{whereParams[${key}]}
+                        [${key}]=#{whereParams[${key}]}
+                    </if>
+                </foreach>
+            </if>
+        </where>
+    </update>
+
+    <update id="updateAndAdd" parameterType="java.util.Map" databaseId="mysql">
+        UPDATE ${tableName}
+        <set>
+            <foreach collection="addParams.keys" item="key" separator=",">
+                <if test="addParams[key] != null">
+                    `${key}` = IFNULL(`${key}`,0) + #{addParams[${key}]}
+                </if>
+            </foreach>
+            ,
+            <foreach collection="params.keys" item="key" separator=",">
+                <if test="params[key] != null">
+                    `${key}` = #{params[${key}]}
+                </if>
+            </foreach>
+        </set>
+        <where>
+            <if test="whereParams==null">
+                1=2
+            </if>
+            <if test="whereParams!=null">
+                <foreach collection="whereParams.keys" item="key" separator="AND">
+                    <if test="whereParams[key] != null">
+                        `${key}`=#{whereParams[${key}]}
                     </if>
                 </foreach>
             </if>
@@ -296,7 +419,7 @@
             <if test="whereParams!=null">
                 <foreach collection="whereParams.keys" item="key" separator="AND">
                     <if test="whereParams[key]!=null">
-                        ${key}=#{whereParams[${key}]}
+                        `${key}`=#{whereParams[${key}]}
                     </if>
                 </foreach>
             </if>
@@ -317,7 +440,7 @@
             <if test="whereParams!=null">
                 <foreach collection="whereParams.keys" item="key" separator="AND">
                     <if test="whereParams[key]!=null">
-                        ${key}=#{whereParams[${key}]}
+                        [${key}]=#{whereParams[${key}]}
                     </if>
                 </foreach>
             </if>
@@ -332,7 +455,7 @@
             <if test="params!=null">
                 <foreach collection="params.keys" item="key" separator="and">
                     <if test="params[key]!=null">
-                        ${key}=#{params[${key}]}
+                        `${key}`=#{params[${key}]}
                     </if>
                 </foreach>
             </if>
@@ -349,7 +472,7 @@
             <if test="params!=null">
                 <foreach collection="params.keys" item="key" separator="and">
                     <if test="params[key]!=null">
-                        ${key}=#{params[${key}]}
+                        [${key}]=#{params[${key}]}
                     </if>
                 </foreach>
             </if>
@@ -366,7 +489,7 @@
             <if test="whereParams!=null">
                 <foreach collection="whereParams.keys" item="key" separator="and">
                     <if test="whereParams[key]!=null">
-                        ${key}=#{whereParams[${key}]}
+                        `${key}`=#{whereParams[${key}]}
                     </if>
                 </foreach>
             </if>
@@ -380,7 +503,7 @@
             <if test="whereParams!=null">
                 <foreach collection="whereParams.keys" item="key" separator="and">
                     <if test="whereParams[key]!=null">
-                        ${key}=#{whereParams[${key}]}
+                        [${key}]=#{whereParams[${key}]}
                     </if>
                 </foreach>
             </if>
@@ -395,7 +518,7 @@
                     ${value}
                 </when>
                 <otherwise>
-                    ${key}
+                    `${key}`
                 </otherwise>
             </choose>
         </foreach>
@@ -405,7 +528,7 @@
             <if test="whereParams!=null">
                 <foreach collection="whereParams.keys" item="key" separator="AND">
                     <if test="whereParams[key]!=null">
-                        ${key}=#{whereParams[${key}]}
+                        `${key}`=#{whereParams[${key}]}
                     </if>
                 </foreach>
             </if>
@@ -420,7 +543,7 @@
                     ${value}
                 </when>
                 <otherwise>
-                    ${key}
+                    [${key}]
                 </otherwise>
             </choose>
         </foreach>
@@ -430,7 +553,7 @@
             <if test="whereParams!=null">
                 <foreach collection="whereParams.keys" item="key" separator="AND">
                     <if test="whereParams[key]!=null">
-                        ${key}=#{whereParams[${key}]}
+                        [${key}]=#{whereParams[${key}]}
                     </if>
                 </foreach>
             </if>
@@ -446,7 +569,7 @@
                     ${value}
                 </when>
                 <otherwise>
-                    ${key}
+                    `${key}`
                 </otherwise>
             </choose>
         </foreach>
@@ -456,7 +579,7 @@
             <if test="whereParams!=null">
                 <foreach collection="whereParams.keys" item="key" separator="AND">
                     <if test="whereParams[key]!=null">
-                        ${key}=#{whereParams[${key}]}
+                        `${key}`=#{whereParams[${key}]}
                     </if>
                 </foreach>
             </if>
@@ -471,7 +594,7 @@
                     ${value}
                 </when>
                 <otherwise>
-                    ${key}
+                    [${key}]
                 </otherwise>
             </choose>
         </foreach>
@@ -481,7 +604,7 @@
             <if test="whereParams!=null">
                 <foreach collection="whereParams.keys" item="key" separator="AND">
                     <if test="whereParams[key]!=null">
-                        ${key}=#{whereParams[${key}]}
+                        [${key}]=#{whereParams[${key}]}
                     </if>
                 </foreach>
             </if>
@@ -496,7 +619,7 @@
                     ${value}
                 </when>
                 <otherwise>
-                    ${key}
+                    `${key}`
                 </otherwise>
             </choose>
         </foreach>
@@ -506,7 +629,7 @@
             <if test="whereParams!=null">
                 <foreach collection="whereParams.keys" item="key" separator="AND">
                     <if test="whereParams[key]!=null">
-                        ${key}=#{whereParams[${key}]}
+                        `${key}`=#{whereParams[${key}]}
                     </if>
                 </foreach>
             </if>
@@ -525,7 +648,7 @@
                     ${value}
                 </when>
                 <otherwise>
-                    ${key}
+                    [${key}]
                 </otherwise>
             </choose>
         </foreach>
@@ -535,7 +658,7 @@
             <if test="whereParams!=null">
                 <foreach collection="whereParams.keys" item="key" separator="AND">
                     <if test="whereParams[key]!=null">
-                        ${key}=#{whereParams[${key}]}
+                        [${key}]=#{whereParams[${key}]}
                     </if>
                 </foreach>
             </if>
